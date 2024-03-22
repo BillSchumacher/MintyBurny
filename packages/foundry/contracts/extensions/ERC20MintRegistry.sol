@@ -1,21 +1,21 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import { Context } from "@openzeppelin/contracts/utils/Context.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {Context} from "@openzeppelin/contracts/utils/Context.sol";
 
 /// @title A smart contract that allows minting tokens and tracking the minting.
 /// @author BillSchumacher
-abstract contract ERC20MintRegistry is Context, ERC20  {
+abstract contract ERC20MintRegistry is Context, ERC20 {
     mapping(address => uint256) private _minted;
     mapping(uint256 => address) private _mintAddresses;
     uint256 private _totalMinters;
     uint256 private _totalMinted;
 
-     /// @notice Get the amount of tokens minted by the given address.
-     /// @dev Returns the amount of tokens minted by the given address.
-     /// @param account (address) - the address of the account.
-     /// @return (uint256) - the amount of tokens minted.
+    /// @notice Get the amount of tokens minted by the given address.
+    /// @dev Returns the amount of tokens minted by the given address.
+    /// @param account (address) - the address of the account.
+    /// @return (uint256) - the amount of tokens minted.
     function mintedBy(address account) public view returns (uint256) {
         return _minted[account];
     }
@@ -38,12 +38,19 @@ abstract contract ERC20MintRegistry is Context, ERC20  {
     /// @param sender (address) - the address of the sender.
     /// @param account (address) - the address of the account.
     /// @param value (uint256) - the amount of tokens to mint.
-    function beforeMint(address sender, address account, uint256 value) internal virtual {}
+    function beforeMint(
+        address sender,
+        address account,
+        uint256 value
+    ) internal virtual {}
 
     /// @dev Update the mint registry.
     /// @param account (address) - the address of the account.
     /// @param value (uint256) - the amount of tokens to mint.
-    function updateMintRegistry(address account, uint256 value) internal virtual {
+    function updateMintRegistry(
+        address account,
+        uint256 value
+    ) internal virtual {
         _totalMinted += value;
         _minted[account] += value;
         _mintAddresses[_totalMinters] = account;

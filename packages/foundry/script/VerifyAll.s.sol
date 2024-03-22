@@ -22,7 +22,7 @@ interface tempVm {
 
 contract VerifyAll is Script {
     uint96 currTransactionIdx;
-    
+
     // add this to be excluded from coverage report
     function testVerifyAll() public virtual {}
 

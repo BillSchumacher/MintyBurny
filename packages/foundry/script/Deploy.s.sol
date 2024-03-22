@@ -16,11 +16,11 @@ contract DeployScript is ScaffoldETHDeploy {
             );
         }
         vm.startBroadcast(deployerPrivateKey);
-        MintyBurny mintyBurnyContract =
-            new MintyBurny(); //vm.addr(deployerPrivateKey)
+        MintyBurny mintyBurnyContract = new MintyBurny(); //vm.addr(deployerPrivateKey)
         console.logString(
             string.concat(
-                "MintyBurny deployed at: ", vm.toString(address(mintyBurnyContract))
+                "MintyBurny deployed at: ",
+                vm.toString(address(mintyBurnyContract))
             )
         );
         address[] memory burnAddresses = new address[](1);
@@ -31,7 +31,8 @@ contract DeployScript is ScaffoldETHDeploy {
             new BurntMintyBurny(burnAddresses, contractAddresses); //vm.addr(deployerPrivateKey)
         console.logString(
             string.concat(
-                "BurntMintyBurny deployed at: ", vm.toString(address(burntMintyBurnyContract))
+                "BurntMintyBurny deployed at: ",
+                vm.toString(address(burntMintyBurnyContract))
             )
         );
         vm.stopBroadcast();

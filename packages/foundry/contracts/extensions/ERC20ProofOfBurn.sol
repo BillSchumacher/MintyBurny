@@ -5,16 +5,19 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "./ERC20BurnRegistry.sol";
 
-
 /// @title A smart contract that checks for burned tokens and mints new tokens based on the burned tokens.
 /// @author BillSchumacher
-abstract contract ERC20ProofOfBurn is Context, ERC20  {
+abstract contract ERC20ProofOfBurn is Context, ERC20 {
     error NoTokensToMint();
+
     uint256 private _lastBurned;
     address[] internal _burnAddresses;
     address[] internal _burnContracts;
 
-    constructor(address[] memory burnAddresses, address[] memory burnContracts) {
+    constructor(
+        address[] memory burnAddresses,
+        address[] memory burnContracts
+    ) {
         _burnAddresses = burnAddresses;
         _burnContracts = burnContracts;
     }
@@ -35,7 +38,12 @@ abstract contract ERC20ProofOfBurn is Context, ERC20  {
     /// @notice Get the amount of tokens eligible to be minted.
     /// @dev Returns the amount of tokens eligible to be minted.
     /// @return balance (uint256) - the amount of tokens eligible to be minted.
-    function getCurrentBurned() public virtual payable returns (uint256 balance) {
+    function getCurrentBurned()
+        public
+        payable
+        virtual
+        returns (uint256 balance)
+    {
         address[] memory eligibleBurnAddresses = _burnAddresses;
         address[] memory eligibleBurnContracts = _burnContracts;
         uint256 addressLength = _burnAddresses.length;
@@ -59,7 +67,10 @@ abstract contract ERC20ProofOfBurn is Context, ERC20  {
     /// @dev Handle access control, accounting, and any conditions here before minting, revert if failed.
     /// @param sender (address) - the address of the sender.
     /// @param account (address) - the address of the account.
-    function beforeMintBurned(address sender, address account) internal virtual {}
+    function beforeMintBurned(
+        address sender,
+        address account
+    ) internal virtual {}
 
     /// @dev Update the mint registry or perform other accounting. Override to customize.
     /// @param account (address) - the address of the account.
@@ -69,7 +80,11 @@ abstract contract ERC20ProofOfBurn is Context, ERC20  {
     /// @dev Mints the burned tokens for the configured contracts and addresses.
     /// @param account (address) - the address of the account.
     /// @return (uint256) - the amount of tokens minted.
-    function _doMintBurned(address account) internal virtual returns (uint256) {
+    function _doMintBurned(address account)
+        internal
+        virtual
+        returns (uint256)
+    {
         uint256 balance = getCurrentBurned();
         uint256 ratio = mintRatio();
         if (balance <= _lastBurned) {
@@ -84,7 +99,7 @@ abstract contract ERC20ProofOfBurn is Context, ERC20  {
     /// @notice Mints the burned tokens for the configured contracts and addresses.
     /// @dev Mints the burned tokens for the configured contracts and addresses.
     /// @return tokens (uint256) - the amount of tokens minted.
-    function mintBurned() public virtual payable returns (uint256 tokens) {
+    function mintBurned() public payable virtual returns (uint256 tokens) {
         address sender = _msgSender();
         beforeMintBurned(sender, sender);
         tokens = _doMintBurned(sender);
@@ -95,12 +110,16 @@ abstract contract ERC20ProofOfBurn is Context, ERC20  {
     /// @notice Mints the burned tokens for the configured contracts and addresses.
     /// @dev Mints the burned tokens for the configured contracts and addresses.
     /// @return tokens (uint256) - the amount of tokens minted.
-    function mintBurnedFor(address account) public virtual payable returns (uint256 tokens) {
+    function mintBurnedFor(address account)
+        public
+        payable
+        virtual
+        returns (uint256 tokens)
+    {
         address sender = _msgSender();
         beforeMintBurned(sender, account);
         tokens = _doMintBurned(account);
         afterMintBurned(account, tokens);
         return tokens;
     }
-
 }

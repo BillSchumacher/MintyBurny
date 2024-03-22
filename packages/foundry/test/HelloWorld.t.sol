@@ -7,13 +7,16 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 
 contract OverCapTest is Test {
     HelloWorld public helloWorld;
+
     function setUp() public {
         helloWorld = new HelloWorld();
-
     }
+
     function testHelloOverCap() public {
         try helloWorld.mint(1000000 * 10 ** helloWorld.decimals()) {
-            assertTrue(false, "mint(..) should revert when value + supply > maxSupply.");
+            assertTrue(
+                false, "mint(..) should revert when value + supply > maxSupply."
+            );
         } catch (bytes memory reason) {
             bytes4 expectedSelector = ERC20Capped.ERC20ExceededCap.selector;
             bytes4 receivedSelector = bytes4(reason);
@@ -23,8 +26,6 @@ contract OverCapTest is Test {
 
     function testHelloUnderCap() public {
         helloWorld.mint(10);
-        assertTrue(
-            helloWorld.totalSupply() == 10
-        );
+        assertTrue(helloWorld.totalSupply() == 10);
     }
 }

@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 /// @title A smart contract that allows burning tokens and tracking the burned tokens.
 /// @author BillSchumacher
-abstract contract ERC20BurnRegistry is ERC20, ERC20Burnable  {
+abstract contract ERC20BurnRegistry is ERC20, ERC20Burnable {
     mapping(address => uint256) private _burned;
     mapping(uint256 => address) private _burnAddresses;
     uint256 private _totalBurners;
@@ -14,7 +14,13 @@ abstract contract ERC20BurnRegistry is ERC20, ERC20Burnable  {
     uint256 private _zeroAddress;
 
     /// @inheritdoc ERC20
-    function balanceOf(address account) public view virtual override returns (uint256) {
+    function balanceOf(address account)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
         if (account == address(0)) return _zeroAddress;
         return ERC20.balanceOf(account);
     }
@@ -44,7 +50,10 @@ abstract contract ERC20BurnRegistry is ERC20, ERC20Burnable  {
     /// @dev Update the burn registry.
     /// @param account (address) - the address of the account.
     /// @param value (uint256) - the amount of tokens to burn.
-    function updateBurnRegistry(address account, uint256 value) internal virtual {
+    function updateBurnRegistry(
+        address account,
+        uint256 value
+    ) internal virtual {
         _totalBurned += value;
         _burned[account] += value;
         _burnAddresses[_totalBurners] = account;

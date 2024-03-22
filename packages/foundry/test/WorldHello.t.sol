@@ -12,8 +12,10 @@ contract OverCapAfterTest is Test {
     }
 
     function testWorldOverCap() public {
-        try worldHello.mint(1000000 * 10 ** worldHello.decimals())  {
-            assertTrue(false, "mint(..) should revert when value + supply > maxSupply.");
+        try worldHello.mint(1000000 * 10 ** worldHello.decimals()) {
+            assertTrue(
+                false, "mint(..) should revert when value + supply > maxSupply."
+            );
         } catch (bytes memory reason) {
             bytes4 expectedSelector = ERC20Capped.ERC20ExceededCap.selector;
             bytes4 receivedSelector = bytes4(reason);
@@ -23,8 +25,6 @@ contract OverCapAfterTest is Test {
 
     function testWorldUnderCap() public {
         worldHello.mint(10);
-        assertTrue(
-            worldHello.totalSupply() == 10
-        );
+        assertTrue(worldHello.totalSupply() == 10);
     }
 }
