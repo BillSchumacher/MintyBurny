@@ -28,7 +28,9 @@ jobs:
           cache: yarn
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: |
+          yarn install --immutable
+          curl -L https://foundry.paradigm.xyz | bash
 
       - name: Run hardhat node, deploy contracts (& generate contracts typescript output)
         run: yarn chain & yarn deploy
