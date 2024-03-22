@@ -41,7 +41,7 @@ abstract contract ERC20ProofOfBurn is Context, ERC20  {
         uint256 addressLength = _burnAddresses.length;
         uint256 contractLength = _burnContracts.length;
         for (uint256 i; i < contractLength; i++) {
-            ERC20BurnRegistry tokenContract = ERC20BurnRegistry(eligibleBurnContracts[i]);
+            ERC20 tokenContract = ERC20(eligibleBurnContracts[i]);
             for (uint256 j; j < addressLength; j++) {
                 balance += tokenContract.balanceOf(eligibleBurnAddresses[j]);
             }
