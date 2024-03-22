@@ -16,6 +16,9 @@ contract ScaffoldETHDeploy is Script {
     string path;
     Deployment[] public deployments;
 
+    // add this to be excluded from coverage report
+    function testDeploy() public {}
+
     function setupLocalhostEnv()
         internal
         returns (uint256 localhostPrivateKey)

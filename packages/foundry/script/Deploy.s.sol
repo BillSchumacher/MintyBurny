@@ -1,7 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "../contracts/YourContract.sol";
+import "../contracts/MintyBurny.sol";
+import "../contracts/BurntMintyBurny.sol";
 import "./DeployHelpers.s.sol";
 
 contract DeployScript is ScaffoldETHDeploy {
@@ -15,11 +16,22 @@ contract DeployScript is ScaffoldETHDeploy {
             );
         }
         vm.startBroadcast(deployerPrivateKey);
-        YourContract yourContract =
-            new YourContract(vm.addr(deployerPrivateKey));
+        MintyBurny mintyBurnyContract =
+            new MintyBurny(); //vm.addr(deployerPrivateKey)
         console.logString(
             string.concat(
-                "YourContract deployed at: ", vm.toString(address(yourContract))
+                "MintyBurny deployed at: ", vm.toString(address(mintyBurnyContract))
+            )
+        );
+        address[] memory burnAddresses = new address[](1);
+        address[] memory contractAddresses = new address[](1);
+        burnAddresses[0] = address(mintyBurnyContract);
+        contractAddresses[0] = address(mintyBurnyContract);
+        BurntMintyBurny burntMintyBurnyContract =
+            new BurntMintyBurny(burnAddresses, contractAddresses); //vm.addr(deployerPrivateKey)
+        console.logString(
+            string.concat(
+                "BurntMintyBurny deployed at: ", vm.toString(address(burntMintyBurnyContract))
             )
         );
         vm.stopBroadcast();
