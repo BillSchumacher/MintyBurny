@@ -31,7 +31,9 @@ jobs:
         run: |
           yarn install --immutable
           curl -L https://foundry.paradigm.xyz | bash
-          ~/.foundry/bin/foundryup
+          ls -lah /home/runner
+          ls -lah /home/runner/work
+          /home/runner/work/_temp/.foundry/bin/foundryup
 
       - name: Run hardhat node, deploy contracts (& generate contracts typescript output)
         run: yarn chain & yarn deploy
