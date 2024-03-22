@@ -34,7 +34,7 @@ jobs:
           source /home/runner/.bashrc
           echo "PATH=$PATH:/home/runner/.config/.foundry/bin" >> $GITHUB_ENV
           /home/runner/.config/.foundry/bin/foundryup
-    
+          git submodule init
 
       - name: Run hardhat node, deploy contracts (& generate contracts typescript output)
         run: yarn chain & yarn deploy
