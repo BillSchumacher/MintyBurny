@@ -32,11 +32,12 @@ jobs:
           yarn install --immutable
           curl -L https://foundry.paradigm.xyz | bash
           source /home/runner/.bashrc
+          echo "PATH=$PATH:/home/runner/.config/.foundry/bin" >> $GITHUB_ENV
           /home/runner/.config/.foundry/bin/foundryup
-          PATH=$PATH:/home/runner/.config/.foundry/bin
+    
 
       - name: Run hardhat node, deploy contracts (& generate contracts typescript output)
-        run: PATH=$PATH:/home/runner/.config/.foundry/bin yarn chain & yarn deploy
+        run: yarn chain & yarn deploy
 
       - name: Run nextjs lint
         run: yarn next:lint --max-warnings=0
