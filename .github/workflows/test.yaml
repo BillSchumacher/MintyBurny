@@ -49,4 +49,5 @@ jobs:
 
       - name: Update coverage
         uses: GoogleCloudPlatform/github-badge-lcov@v1.0.0
-        file: ./packages/foundry/lcon.info
+        with:
+          file: ./packages/foundry/lcov.info
