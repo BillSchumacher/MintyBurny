@@ -28,8 +28,8 @@ function getArtifactOfContract(contractName) {
     `out/${contractName}.sol`
   );
   return JSON.parse(
-      fs.readFileSync(`${current_path_to_artifacts}/${contractName}.json`)
-    );
+    fs.readFileSync(`${current_path_to_artifacts}/${contractName}.json`)
+  );
 }
 
 function getInheritedFromContracts(artifact) {
@@ -38,10 +38,13 @@ function getInheritedFromContracts(artifact) {
     return inheritedFromContracts;
   }
   for (const astNode of artifact.ast.nodes) {
-    if (astNode.nodeType === "ContractDefinition" && astNode.baseContracts.length > 0) {
-          inheritedFromContracts = astNode.baseContracts.map(
-            ({ baseName }) => baseName.name
-          );
+    if (
+      astNode.nodeType === "ContractDefinition" &&
+      astNode.baseContracts.length > 0
+    ) {
+      inheritedFromContracts = astNode.baseContracts.map(
+        ({ baseName }) => baseName.name
+      );
     }
   }
   return inheritedFromContracts;
