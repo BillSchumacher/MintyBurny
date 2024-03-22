@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     MintyBurny: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      address: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
       abi: [
         {
           type: "constructor",
@@ -150,6 +150,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "cap",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "decimals",
           inputs: [],
           outputs: [
@@ -202,6 +215,19 @@ const deployedContracts = {
               internalType: "address",
             },
           ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "minters",
+          inputs: [],
           outputs: [
             {
               name: "",
@@ -381,6 +407,22 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "ERC20ExceededCap",
+          inputs: [
+            {
+              name: "increasedSupply",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "cap",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "ERC20InsufficientAllowance",
           inputs: [
             {
@@ -434,6 +476,17 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "ERC20InvalidCap",
+          inputs: [
+            {
+              name: "cap",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "ERC20InvalidReceiver",
           inputs: [
             {
@@ -467,28 +520,30 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        allowance: "contracts/extensions/BurnRegistry.sol",
-        approve: "contracts/extensions/BurnRegistry.sol",
-        balanceOf: "contracts/extensions/BurnRegistry.sol",
-        decimals: "contracts/extensions/BurnRegistry.sol",
-        mint: "contracts/extensions/MintRegistry.sol",
-        mintFor: "contracts/extensions/MintRegistry.sol",
-        mintedBy: "contracts/extensions/MintRegistry.sol",
-        name: "contracts/extensions/BurnRegistry.sol",
-        symbol: "contracts/extensions/BurnRegistry.sol",
-        totalMinted: "contracts/extensions/MintRegistry.sol",
-        totalSupply: "contracts/extensions/BurnRegistry.sol",
-        transfer: "contracts/extensions/BurnRegistry.sol",
-        transferFrom: "contracts/extensions/BurnRegistry.sol",
-        burn: "contracts/extensions/BurnRegistry.sol",
-        burnFrom: "contracts/extensions/BurnRegistry.sol",
-        burnedFrom: "contracts/extensions/BurnRegistry.sol",
-        burns: "contracts/extensions/BurnRegistry.sol",
-        totalBurned: "contracts/extensions/BurnRegistry.sol",
+        allowance: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        approve: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        decimals: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        mint: "contracts/extensions/ERC20MintRegistry.sol",
+        mintFor: "contracts/extensions/ERC20MintRegistry.sol",
+        mintedBy: "contracts/extensions/ERC20MintRegistry.sol",
+        minters: "contracts/extensions/ERC20MintRegistry.sol",
+        name: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        symbol: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        totalMinted: "contracts/extensions/ERC20MintRegistry.sol",
+        totalSupply: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        transfer: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        burn: "contracts/extensions/ERC20BurnRegistry.sol",
+        burnFrom: "contracts/extensions/ERC20BurnRegistry.sol",
+        burnedFrom: "contracts/extensions/ERC20BurnRegistry.sol",
+        burns: "contracts/extensions/ERC20BurnRegistry.sol",
+        totalBurned: "contracts/extensions/ERC20BurnRegistry.sol",
+        cap: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
       },
     },
     BurntMintyBurny: {
-      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      address: "0x9A676e781A523b5d0C0e43731313A708CB607508",
       abi: [
         {
           type: "constructor",
@@ -642,6 +697,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "cap",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "decimals",
           inputs: [],
           outputs: [
@@ -659,7 +727,7 @@ const deployedContracts = {
           inputs: [],
           outputs: [
             {
-              name: "",
+              name: "balance",
               type: "uint256",
               internalType: "uint256",
             },
@@ -744,6 +812,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "mintRatio",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
           name: "mintedBy",
           inputs: [
             {
@@ -752,6 +833,19 @@ const deployedContracts = {
               internalType: "address",
             },
           ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "minters",
+          inputs: [],
           outputs: [
             {
               name: "",
@@ -931,6 +1025,22 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "ERC20ExceededCap",
+          inputs: [
+            {
+              name: "increasedSupply",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "cap",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "ERC20InsufficientAllowance",
           inputs: [
             {
@@ -984,6 +1094,17 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "ERC20InvalidCap",
+          inputs: [
+            {
+              name: "cap",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "ERC20InvalidReceiver",
           inputs: [
             {
@@ -1015,30 +1136,38 @@ const deployedContracts = {
             },
           ],
         },
+        {
+          type: "error",
+          name: "NoTokensToMint",
+          inputs: [],
+        },
       ],
       inheritedFunctions: {
-        allowance: "contracts/extensions/BurnRegistry.sol",
-        approve: "contracts/extensions/BurnRegistry.sol",
-        balanceOf: "contracts/extensions/BurnRegistry.sol",
-        decimals: "contracts/extensions/BurnRegistry.sol",
-        getCurrentBurned: "contracts/extensions/ProofOfBurn.sol",
-        lastBurned: "contracts/extensions/ProofOfBurn.sol",
-        mintBurned: "contracts/extensions/ProofOfBurn.sol",
-        mintBurnedFor: "contracts/extensions/ProofOfBurn.sol",
-        name: "contracts/extensions/BurnRegistry.sol",
-        symbol: "contracts/extensions/BurnRegistry.sol",
-        totalSupply: "contracts/extensions/BurnRegistry.sol",
-        transfer: "contracts/extensions/BurnRegistry.sol",
-        transferFrom: "contracts/extensions/BurnRegistry.sol",
-        mint: "contracts/extensions/MintRegistry.sol",
-        mintFor: "contracts/extensions/MintRegistry.sol",
-        mintedBy: "contracts/extensions/MintRegistry.sol",
-        totalMinted: "contracts/extensions/MintRegistry.sol",
-        burn: "contracts/extensions/BurnRegistry.sol",
-        burnFrom: "contracts/extensions/BurnRegistry.sol",
-        burnedFrom: "contracts/extensions/BurnRegistry.sol",
-        burns: "contracts/extensions/BurnRegistry.sol",
-        totalBurned: "contracts/extensions/BurnRegistry.sol",
+        allowance: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        approve: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        decimals: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        getCurrentBurned: "contracts/extensions/ERC20ProofOfBurn.sol",
+        lastBurned: "contracts/extensions/ERC20ProofOfBurn.sol",
+        mintBurned: "contracts/extensions/ERC20ProofOfBurn.sol",
+        mintBurnedFor: "contracts/extensions/ERC20ProofOfBurn.sol",
+        mintRatio: "contracts/extensions/ERC20ProofOfBurn.sol",
+        name: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        symbol: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        totalSupply: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        transfer: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        mint: "contracts/extensions/ERC20MintRegistry.sol",
+        mintFor: "contracts/extensions/ERC20MintRegistry.sol",
+        mintedBy: "contracts/extensions/ERC20MintRegistry.sol",
+        minters: "contracts/extensions/ERC20MintRegistry.sol",
+        totalMinted: "contracts/extensions/ERC20MintRegistry.sol",
+        burn: "contracts/extensions/ERC20BurnRegistry.sol",
+        burnFrom: "contracts/extensions/ERC20BurnRegistry.sol",
+        burnedFrom: "contracts/extensions/ERC20BurnRegistry.sol",
+        burns: "contracts/extensions/ERC20BurnRegistry.sol",
+        totalBurned: "contracts/extensions/ERC20BurnRegistry.sol",
+        cap: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
       },
     },
   },

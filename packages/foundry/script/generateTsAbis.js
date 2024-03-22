@@ -27,22 +27,21 @@ function getArtifactOfContract(contractName) {
     "..",
     `out/${contractName}.sol`
   );
-  const artifactJson = JSON.parse(
-    fs.readFileSync(`${current_path_to_artifacts}/${contractName}.json`)
-  );
-
-  return artifactJson;
+  return JSON.parse(
+      fs.readFileSync(`${current_path_to_artifacts}/${contractName}.json`)
+    );
 }
 
 function getInheritedFromContracts(artifact) {
   let inheritedFromContracts = [];
+  if (!artifact || !artifact.ast) {
+    return inheritedFromContracts;
+  }
   for (const astNode of artifact.ast.nodes) {
-    if (astNode.nodeType == "ContractDefinition") {
-      if (astNode.baseContracts.length > 0) {
-        inheritedFromContracts = astNode.baseContracts.map(
-          ({ baseName }) => baseName.name
-        );
-      }
+    if (astNode.nodeType === "ContractDefinition" && astNode.baseContracts.length > 0) {
+          inheritedFromContracts = astNode.baseContracts.map(
+            ({ baseName }) => baseName.name
+          );
     }
   }
   return inheritedFromContracts;
@@ -57,7 +56,7 @@ function getInheritedFunctions(mainArtifact) {
       ast: { absolutePath },
     } = getArtifactOfContract(inheritanceContractName);
     for (const abiEntry of abi) {
-      if (abiEntry.type == "function") {
+      if (abiEntry.type === "function") {
         inheritedFunctions[abiEntry.name] = absolutePath;
       }
     }
@@ -74,17 +73,18 @@ function main() {
   const current_path_to_deployments = path.join(__dirname, "..", "deployments");
 
   const chains = getDirectories(current_path_to_broadcast);
-  const Deploymentchains = getFiles(current_path_to_deployments);
+  const deploymentChains = getFiles(current_path_to_deployments);
 
   const deployments = {};
 
-  Deploymentchains.forEach((chain) => {
-    if (!chain.endsWith(".json")) return;
+  deploymentChains.forEach((chain) => {
+    if (!chain.endsWith(".json")) {
+      return;
+    }
     chain = chain.slice(0, -5);
-    var deploymentObject = JSON.parse(
+    deployments[chain] = JSON.parse(
       fs.readFileSync(`${current_path_to_deployments}/${chain}.json`)
     );
-    deployments[chain] = deploymentObject;
   });
 
   const allGeneratedContracts = {};
@@ -95,7 +95,7 @@ function main() {
       fs.readFileSync(`${current_path_to_broadcast}/${chain}/run-latest.json`)
     );
     const transactionsCreate = broadCastObject.transactions.filter(
-      (transaction) => transaction.transactionType == "CREATE"
+      (transaction) => transaction.transactionType === "CREATE"
     );
     transactionsCreate.forEach((transaction) => {
       const artifact = getArtifactOfContract(transaction.contractName);
