@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     MintyBurny: {
-      address: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
       abi: [
         {
           type: "constructor",
@@ -736,6 +736,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getMintFee",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "lastBurned",
           inputs: [],
           outputs: [
@@ -1138,7 +1151,28 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "InsufficientMintFee",
+          inputs: [
+            {
+              name: "mintFee",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "msgValue",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "NoTokensToMint",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "UseMintBurnedInsteadOfMint",
           inputs: [],
         },
       ],

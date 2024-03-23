@@ -3,56 +3,50 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+import "./ERC20BurnRegistry.sol";
 import "./ERC20MintyBurnyErrors.sol";
 
-
 /// @title A smart contract that checks for burned tokens and mints new tokens based on the burned tokens.
+/// requires burnerContracts to implement ERC20BurnRegistry
 /// @author BillSchumacher
-abstract contract ERC20ProofOfBurn is Context, ERC20 {
-
-    uint256 private _lastBurned;
-    address[] internal _burnAddresses;
-    address[] internal _burnContracts;
+abstract contract ERC20ProofOfBurner is Context, ERC20 {
+    mapping (address => uint256) private _lastBurnerBurned;
+    address[] internal _burnerContracts;
 
     constructor(
-        address[] memory burnAddresses,
-        address[] memory burnContracts
+        address[] memory burnerContracts
     ) {
-        _burnAddresses = burnAddresses;
-        _burnContracts = burnContracts;
+        _burnerContracts = burnerContracts;
     }
 
     /// @notice Get the last amount of tokens that were burned.
     /// @dev Returns the last amount of tokens that were burned.
     /// @return (uint256) - the last amount of tokens that were burned.
-    function lastBurned() public view returns (uint256) {
-        return _lastBurned;
+    function lastBurnerBurned() public view returns (uint256) {
+        return _lastBurnerBurned[_msgSender()];
     }
 
     /// @dev Set the last amount of tokens that were burned. Override to customize.
     /// @param value (uint256) - the last amount of tokens that were burned.
-    function setLastBurned(uint256 value) internal virtual {
-        _lastBurned = value;
+    function setLastBurnerBurned(uint256 value) internal virtual {
+        _lastBurnerBurned[_msgSender()] = value;
     }
 
     /// @notice Get the amount of tokens eligible to be minted.
     /// @dev Returns the amount of tokens eligible to be minted.
     /// @return balance (uint256) - the amount of tokens eligible to be minted.
-    function getCurrentBurned()
+    function getCurrentBurnerBurned()
         public
         payable
         virtual
         returns (uint256 balance)
     {
-        address[] memory eligibleBurnAddresses = _burnAddresses;
-        address[] memory eligibleBurnContracts = _burnContracts;
-        uint256 addressLength = _burnAddresses.length;
-        uint256 contractLength = _burnContracts.length;
+        address[] memory eligibleBurnerContracts = _burnerContracts;
+        uint256 contractLength = eligibleBurnerContracts.length;
+        address sender = _msgSender();
         for (uint256 i; i < contractLength; i++) {
-            ERC20 tokenContract = ERC20(eligibleBurnContracts[i]);
-            for (uint256 j; j < addressLength; j++) {
-                balance += tokenContract.balanceOf(eligibleBurnAddresses[j]);
-            }
+            ERC20BurnRegistry tokenContract = ERC20BurnRegistry(eligibleBurnerContracts[i]);
+            balance += tokenContract.burnedFrom(sender);
         }
         return balance;
     }
@@ -64,17 +58,17 @@ abstract contract ERC20ProofOfBurn is Context, ERC20 {
         return 5000;
     }
 
-    /// @notice Get the ratio of tokens to mint for ProofOfBurn.
-    /// @dev Returns the ratio of tokens to mint for ProofOfBurn. Override to customize. Divided by 10000. 5000 = 0.5 (default)
+    /// @notice Get the ratio of tokens to mint for ProofOfBurner.
+    /// @dev Returns the ratio of tokens to mint for ProofOfBurner. Override to customize. Divided by 10000. 5000 = 0.5 (default)
     /// @return (uint256) - the ratio of tokens to mint.
-    function burnMintRatio() public virtual returns (uint256) {
+    function mintBurnerRatio() public virtual returns (uint256) {
         return mintRatio();
     }
 
     /// @dev Handle access control, accounting, and any conditions here before minting, revert if failed.
     /// @param sender (address) - the address of the sender.
     /// @param account (address) - the address of the account.
-    function beforeMintBurned(
+    function beforeMintBurnerBurned(
         address sender,
         address account
     ) internal virtual {}
@@ -82,51 +76,51 @@ abstract contract ERC20ProofOfBurn is Context, ERC20 {
     /// @dev Update the mint registry or perform other accounting. Override to customize.
     /// @param account (address) - the address of the account.
     /// @param value (uint256) - the amount of tokens minted.
-    function afterMintBurned(address account, uint256 value) internal virtual {}
+    function afterMintBurnerBurned(address account, uint256 value) internal virtual {}
 
     /// @dev Mints the burned tokens for the configured contracts and addresses.
     /// @param account (address) - the address of the account.
     /// @return (uint256) - the amount of tokens minted.
-    function _doMintBurned(address account)
+    function _doMintBurnerBurned(address account)
         internal
         virtual
         returns (uint256)
     {
-        uint256 balance = getCurrentBurned();
-        uint256 tokensLastBurned = lastBurned();
+        uint256 balance = getCurrentBurnerBurned();
+        uint256 tokensLastBurned = lastBurnerBurned();
         if (balance <= tokensLastBurned) {
             revert NoTokensToMint();
         }
-        uint256 tokens = (balance - tokensLastBurned) * burnMintRatio() / 10000;
-        setLastBurned(balance);
+        uint256 tokens = (balance - tokensLastBurned) * mintBurnerRatio() / 10000;
+        setLastBurnerBurned(balance);
         _mint(account, tokens);
         return tokens;
     }
 
-    /// @notice Mints the burned tokens for the configured contracts and addresses.
-    /// @dev Mints the burned tokens for the configured contracts and addresses.
+    /// @notice Mints the burned tokens for the configured contracts and burner.
+    /// @dev Mints the burned tokens for the configured contracts and burner.
     /// @return tokens (uint256) - the amount of tokens minted.
-    function mintBurned() public payable virtual returns (uint256 tokens) {
+    function mintBurnerBurned() public payable virtual returns (uint256 tokens) {
         address sender = _msgSender();
-        beforeMintBurned(sender, sender);
-        tokens = _doMintBurned(sender);
-        afterMintBurned(sender, tokens);
+        beforeMintBurnerBurned(sender, sender);
+        tokens = _doMintBurnerBurned(sender);
+        afterMintBurnerBurned(sender, tokens);
         return tokens;
     }
 
-    /// @notice Mints the burned tokens for the configured contracts and addresses.
-    /// @dev Mints the burned tokens for the configured contracts and addresses.
+    /// @notice Mints the burned tokens for the configured contracts and burner.
+    /// @dev Mints the burned tokens for the configured contracts and burner.
     /// @return tokens (uint256) - the amount of tokens minted.
-    function mintBurnedFor(address account)
+    function mintBurnerBurnedFor(address account)
         public
         payable
         virtual
         returns (uint256 tokens)
     {
         address sender = _msgSender();
-        beforeMintBurned(sender, account);
-        tokens = _doMintBurned(account);
-        afterMintBurned(account, tokens);
+        beforeMintBurnerBurned(sender, account);
+        tokens = _doMintBurnerBurned(account);
+        afterMintBurnerBurned(account, tokens);
         return tokens;
     }
 }

@@ -47,7 +47,8 @@ jobs:
       - name: Run tests
         run: yarn coverage
 
-      - name: Update coverage
-        uses: GoogleCloudPlatform/lcov-coverage-badge@v1.0.1
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
         with:
-          file: ./packages/foundry/lcov.info
+          format: lcov
+          files: packages/foundry/lcov.info

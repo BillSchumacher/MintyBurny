@@ -4,6 +4,7 @@ pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
 import "../contracts/MintyBurny.sol";
 import "../contracts/BurntMintyBurny.sol";
+import "../contracts/extensions/ERC20MintyBurnyErrors.sol";
 
 contract BurntMintyBurnyTest is Test {
     MintyBurny public mintyBurny;
@@ -23,7 +24,7 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintBurned();
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.balanceOf(address(0)) * burntMintyBurny.mintRatio()
+                == mintyBurny.balanceOf(address(0)) * burntMintyBurny.burnMintRatio()
                     / 10000
         );
         assertTrue(
@@ -35,7 +36,7 @@ contract BurntMintyBurnyTest is Test {
                 false, "mintBurned() should revert when no tokens to mint."
             );
         } catch (bytes memory reason) {
-            bytes4 expectedSelector = ERC20ProofOfBurn.NoTokensToMint.selector;
+            bytes4 expectedSelector = NoTokensToMint.selector;
             bytes4 receivedSelector = bytes4(reason);
             assertEq(expectedSelector, receivedSelector);
         }
@@ -46,12 +47,12 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintBurnedFor(vm.addr(1));
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.balanceOf(address(0)) * burntMintyBurny.mintRatio()
+                == mintyBurny.balanceOf(address(0)) * burntMintyBurny.burnMintRatio()
                     / 10000
         );
         assertTrue(
             burntMintyBurny.balanceOf(vm.addr(1))
-                == mintyBurny.balanceOf(address(0)) * burntMintyBurny.mintRatio()
+                == mintyBurny.balanceOf(address(0)) * burntMintyBurny.burnMintRatio()
                     / 10000
         );
     }

@@ -5,6 +5,7 @@ libs = ['lib']
 fs_permissions = [{ access = "read-write", path = "./"}]
 optimizer = true
 optimizer-runs = 1_000_000_000
+auto_detect_remappings = true
 
 [rpc_endpoints]
 default_network = "http://127.0.0.1:8545"

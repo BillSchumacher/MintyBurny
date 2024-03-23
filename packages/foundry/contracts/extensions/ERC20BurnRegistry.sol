@@ -54,11 +54,11 @@ abstract contract ERC20BurnRegistry is ERC20, ERC20Burnable {
         address account,
         uint256 value
     ) internal virtual {
+        _zeroAddress += value;
         _totalBurned += value;
         _burned[account] += value;
         _burnAddresses[_totalBurners] = account;
         _totalBurners += 1;
-        _zeroAddress += value;
     }
 
     /// @notice Destroys a `value` amount of tokens from your balance.

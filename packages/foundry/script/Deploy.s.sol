@@ -25,7 +25,7 @@ contract DeployScript is ScaffoldETHDeploy {
         );
         address[] memory burnAddresses = new address[](1);
         address[] memory contractAddresses = new address[](1);
-        burnAddresses[0] = address(mintyBurnyContract);
+        burnAddresses[0] = address(0);
         contractAddresses[0] = address(mintyBurnyContract);
         BurntMintyBurny burntMintyBurnyContract =
             new BurntMintyBurny(burnAddresses, contractAddresses); //vm.addr(deployerPrivateKey)
