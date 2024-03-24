@@ -64,6 +64,31 @@ contract BurntMintyBurnyTest is Test {
         );
     }
 
+    function testCurrentBurnerBurned() public {
+        vm.startPrank(vm.addr(1));
+        assertTrue(
+            burntMintyBurny.getCurrentBurnerBurned()
+                == mintyBurny.burnedFrom(vm.addr(1))
+        );
+        vm.stopPrank();
+    }
+
+    function testCurrentMinterMinted() public {
+        vm.startPrank(vm.addr(1));
+        assertTrue(
+            burntMintyBurny.getCurrentMinterMinted()
+                == mintyBurny.mintedBy(vm.addr(1))
+        );
+        vm.stopPrank();
+    }
+
+    function testCurrentMinted() public {
+        assertTrue(
+            burntMintyBurny.getCurrentMinted()
+                == mintyBurny.totalSupply()
+        );
+    }
+
     function testZeroAddressHasBalance() public {
         burntMintyBurny.burn(10000 * 10 ** burntMintyBurny.decimals());
         uint256 zeroBalance = burntMintyBurny.balanceOf(address(0));
@@ -157,5 +182,219 @@ contract BurntMintyBurnyTest is Test {
             bytes4 receivedSelector = bytes4(reason);
             assertEq(expectedSelector, receivedSelector);
         }
+    }
+
+    function testMintRatio() public {
+        assertTrue(burntMintyBurny.mintRatio() == 5000);
+    }
+
+    function testMintMinterRatio() public {
+        assertTrue(burntMintyBurny.mintMinterRatio() == 5000);
+    }
+
+    function testMintBurnerRatio() public {
+        assertTrue(burntMintyBurny.mintBurnerRatio() == 5000);
+    }
+
+    function testMintBurnRatio() public {
+        assertTrue(burntMintyBurny.burnMintRatio() == 5000);
+    }
+
+
+    function testMintBurnerBurned() public {
+        vm.deal(vm.addr(1), 100000 * 10 ** 18);
+        vm.startPrank(vm.addr(1));
+        mintyBurny.mint(20000 * 10 ** 18);
+        mintyBurny.burn(20000 * 10 ** 18);
+        uint256 minted = burntMintyBurny.totalSupply();
+        burntMintyBurny.mintBurnerBurned();
+        assertTrue(
+            burntMintyBurny.totalSupply() - minted
+                == mintyBurny.burnedFrom(vm.addr(1)) * burntMintyBurny.mintBurnerRatio()
+                    / 10000
+        );
+        assertTrue(
+            burntMintyBurny.lastBurnerBurned() == mintyBurny.burnedFrom(vm.addr(1))
+        );
+
+        try burntMintyBurny.mintBurnerBurned() {
+            assertTrue(
+                false, "mintBurnerBurned() should revert when no tokens to mint."
+            );
+        } catch (bytes memory reason) {
+            bytes4 expectedSelector = NoTokensToMint.selector;
+            bytes4 receivedSelector = bytes4(reason);
+            assertEq(expectedSelector, receivedSelector);
+        }
+        vm.stopPrank();
+    }
+
+    function testMintBurnerBurnedFor() public {
+        vm.deal(vm.addr(1), 100000 * 10 ** 18);
+        vm.startPrank(vm.addr(1));
+        mintyBurny.mint(20000 * 10 ** 18);
+        mintyBurny.burn(20000 * 10 ** 18);
+        uint256 minted = burntMintyBurny.totalSupply();
+        burntMintyBurny.mintBurnerBurnedFor(vm.addr(2));
+        assertTrue(
+            burntMintyBurny.totalSupply() - minted
+                == mintyBurny.burnedFrom(vm.addr(1)) * burntMintyBurny.mintBurnerRatio()
+                    / 10000
+        );
+        assertTrue(
+            burntMintyBurny.lastBurnerBurned() == mintyBurny.burnedFrom(vm.addr(1))
+        );
+        assertTrue(
+            burntMintyBurny.balanceOf(vm.addr(2))
+                == mintyBurny.burnedFrom(vm.addr(1)) * burntMintyBurny.mintBurnerRatio()
+                    / 10000
+        );
+        assertTrue(
+            burntMintyBurny.balanceOf(vm.addr(1)) == 0
+        );
+
+        try burntMintyBurny.mintBurnerBurned() {
+            assertTrue(
+                false, "mintBurnerBurned() should revert when no tokens to mint."
+            );
+        } catch (bytes memory reason) {
+            bytes4 expectedSelector = NoTokensToMint.selector;
+            bytes4 receivedSelector = bytes4(reason);
+            assertEq(expectedSelector, receivedSelector);
+        }
+        vm.stopPrank();
+    }
+
+    function testMintMinted() public {
+        vm.deal(vm.addr(1), 100000 * 10 ** 18);
+        vm.startPrank(vm.addr(1));
+        uint256 minted = burntMintyBurny.totalSupply();
+        burntMintyBurny.mintMinted();
+        assertTrue(
+            burntMintyBurny.totalSupply() - minted
+                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio()
+                    / 10000
+        );
+        assertTrue(
+            burntMintyBurny.lastMinted() == mintyBurny.totalSupply()
+        );
+        assertTrue(
+            burntMintyBurny.balanceOf(vm.addr(1))
+                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio()
+                    / 10000
+        );
+
+        try burntMintyBurny.mintMinted() {
+            assertTrue(
+                false, "mintMinted() should revert when no tokens to mint."
+            );
+        } catch (bytes memory reason) {
+            bytes4 expectedSelector = NoTokensToMint.selector;
+            bytes4 receivedSelector = bytes4(reason);
+            assertEq(expectedSelector, receivedSelector);
+        }
+        vm.stopPrank();
+    }
+
+    function testMintMintedFor() public {
+        vm.deal(vm.addr(1), 100000 * 10 ** 18);
+        vm.startPrank(vm.addr(1));
+        uint256 minted = burntMintyBurny.totalSupply();
+        burntMintyBurny.mintMintedFor(vm.addr(2));
+        assertTrue(
+            burntMintyBurny.totalSupply() - minted
+                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio()
+                    / 10000
+        );
+        assertTrue(
+            burntMintyBurny.lastMinted() == mintyBurny.totalSupply()
+        );
+        assertTrue(
+            burntMintyBurny.balanceOf(vm.addr(2))
+                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio()
+                    / 10000
+        );
+        assertTrue(
+            burntMintyBurny.balanceOf(vm.addr(1)) == 0
+        );
+
+        try burntMintyBurny.mintMinted() {
+            assertTrue(
+                false, "mintMinted() should revert when no tokens to mint."
+            );
+        } catch (bytes memory reason) {
+            bytes4 expectedSelector = NoTokensToMint.selector;
+            bytes4 receivedSelector = bytes4(reason);
+            assertEq(expectedSelector, receivedSelector);
+        }
+        vm.stopPrank();
+    }
+
+    function testMintMinterMinted() public {
+        vm.deal(vm.addr(1), 100000 * 10 ** 18);
+        vm.startPrank(vm.addr(1));
+        uint256 minted = burntMintyBurny.totalSupply();
+        mintyBurny.mint(20000 * 10 ** 18);
+        burntMintyBurny.mintMinterMinted();
+        assertTrue(
+            burntMintyBurny.totalSupply() - minted
+                == mintyBurny.balanceOf(vm.addr(1)) * burntMintyBurny.mintMinterRatio()
+                    / 10000
+        );
+        assertTrue(
+            burntMintyBurny.lastMinterMinted() == mintyBurny.balanceOf(vm.addr(1))
+        );
+        assertTrue(
+            burntMintyBurny.balanceOf(vm.addr(1))
+                == mintyBurny.balanceOf(vm.addr(1)) * burntMintyBurny.mintMinterRatio()
+                    / 10000
+        );
+
+        try burntMintyBurny.mintMinterMinted() {
+            assertTrue(
+                false, "mintMinter() should revert when no tokens to mint."
+            );
+        } catch (bytes memory reason) {
+            bytes4 expectedSelector = NoTokensToMint.selector;
+            bytes4 receivedSelector = bytes4(reason);
+            assertEq(expectedSelector, receivedSelector);
+        }
+        vm.stopPrank();
+    }
+
+    function testMintMinterMintedFor() public {
+        vm.deal(vm.addr(1), 100000 * 10 ** 18);
+        vm.startPrank(vm.addr(1));
+        uint256 minted = burntMintyBurny.totalSupply();
+        mintyBurny.mint(20000 * 10 ** 18);
+        burntMintyBurny.mintMinterMintedFor(vm.addr(2));
+        assertTrue(
+            burntMintyBurny.totalSupply() - minted
+                == mintyBurny.mintedBy(vm.addr(1)) * burntMintyBurny.mintMinterRatio()
+                    / 10000
+        );
+        assertTrue(
+            burntMintyBurny.lastMinterMinted() == mintyBurny.balanceOf(vm.addr(1))
+        );
+        assertTrue(
+            burntMintyBurny.balanceOf(vm.addr(2))
+                == mintyBurny.mintedBy(vm.addr(1)) * burntMintyBurny.mintMinterRatio()
+                    / 10000
+        );
+
+        assertTrue(
+            burntMintyBurny.balanceOf(vm.addr(1))
+                == 0
+        );
+        try burntMintyBurny.mintMinterMintedFor(vm.addr(2)) {
+            assertTrue(
+                false, "mintMinterMintedFor() should revert when no tokens to mint."
+            );
+        } catch (bytes memory reason) {
+            bytes4 expectedSelector = NoTokensToMint.selector;
+            bytes4 receivedSelector = bytes4(reason);
+            assertEq(expectedSelector, receivedSelector);
+        }
+        vm.stopPrank();
     }
 }

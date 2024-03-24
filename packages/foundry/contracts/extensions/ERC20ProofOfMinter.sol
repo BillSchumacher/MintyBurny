@@ -9,7 +9,7 @@ import "./ERC20MintRegistry.sol";
 /// @title A smart contract that checks for minted tokens and mints new tokens based on the minted tokens.
 /// requires minterContracts to implement ERC20MintRegistry
 /// @author BillSchumacher
-abstract contract ERC20ProofOfBurner is Context, ERC20 {
+abstract contract ERC20ProofOfMinter is Context, ERC20 {
     mapping (address => uint256) private _lastMinterMinted;
     address[] internal _minterContracts;
 
