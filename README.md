@@ -1,21 +1,53 @@
-# 🏗 Scaffold-ETH 2
+# MintyBurny
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+[![Coverage Status](https://coveralls.io/repos/github/BillSchumacher/MintyBurny/badge.svg?branch=main)](https://coveralls.io/github/BillSchumacher/MintyBurny?branch=main)
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+A Scaffold-ETH 2 project implementing minting and burning ERC20 extensions.
 
-⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
+## Contracts
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+### ERC20MintRegistry
+An abstract contract that tracks the minting of ERC20 tokens.
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+### ERC20BurnRegistry
+An abstract contract that tracks the burning of ERC20 tokens.
+
+### ERC20MintyBurnyErrors
+Error definitions.
+
+### ERC20ProofOfBurn
+An abstract contract that implements a proof of burn mechanism for ERC20 tokens.
+
+Allows minting of tokens if the target contracts' burn addresses has more burned tokens than the last burned amount.
+
+### ERC20ProofOfBurner
+An abstract contract that implements a proof of burn mechanism for ERC20 tokens.
+
+This requires that the target contract implements the ERC20BurnRegistry.
+
+Allows minting of tokens if the target contract's burn registry has more burned tokens than the last burned amount for the sender.
+
+### ERC20ProofOfMint
+An abstract contract that implements a proof of mint mechanism for ERC20 tokens.
+
+Allows minting of tokens if the target contract's total supply has more minted tokens than the last minted amount.
+
+### ERC20ProofOfMinter
+An abstract contract that implements a proof of mint mechanism for ERC20 tokens.
+
+This requires that the target contract implements the ERC20MintRegistry.
+
+Allows minting of tokens if the target contract's mint registry has more minted tokens than the last minted amount for the sender.
+
+### ERC20MintyBurny
+A smart contract implementing ERC20MintRegistry and ERC20BurnRegistry.
+
+### ERC20BurntMintyBurny
+An example contract implementing all extensions.
+
+### MintyBurny
+An example contract implementing ERC20MintRegistry and ERC20BurnRegistry.
+
 
 ## Requirements
 
