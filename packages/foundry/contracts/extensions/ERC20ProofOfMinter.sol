@@ -10,12 +10,10 @@ import "./ERC20MintRegistry.sol";
 /// requires minterContracts to implement ERC20MintRegistry
 /// @author BillSchumacher
 abstract contract ERC20ProofOfMinter is Context, ERC20 {
-    mapping (address => uint256) private _lastMinterMinted;
+    mapping(address => uint256) private _lastMinterMinted;
     address[] internal _minterContracts;
 
-    constructor(
-        address[] memory minterContracts
-    ) {
+    constructor(address[] memory minterContracts) {
         _minterContracts = minterContracts;
     }
 
@@ -45,7 +43,8 @@ abstract contract ERC20ProofOfMinter is Context, ERC20 {
         uint256 contractLength = eligibleMinterContracts.length;
         address sender = _msgSender();
         for (uint256 i; i < contractLength; i++) {
-            ERC20MintRegistry tokenContract = ERC20MintRegistry(eligibleMinterContracts[i]);
+            ERC20MintRegistry tokenContract =
+                ERC20MintRegistry(eligibleMinterContracts[i]);
             balance += tokenContract.mintedBy(sender);
         }
         return balance;
@@ -76,7 +75,10 @@ abstract contract ERC20ProofOfMinter is Context, ERC20 {
     /// @dev Update the mint registry or perform other accounting. Override to customize.
     /// @param account (address) - the address of the account.
     /// @param value (uint256) - the amount of tokens minted.
-    function afterMintMinterMinted(address account, uint256 value) internal virtual {}
+    function afterMintMinterMinted(
+        address account,
+        uint256 value
+    ) internal virtual {}
 
     /// @dev Mints the minted tokens for the configured contracts and sender.
     /// @param account (address) - the address of the account.
@@ -91,7 +93,8 @@ abstract contract ERC20ProofOfMinter is Context, ERC20 {
         if (balance <= tokensLastMinted) {
             revert NoTokensToMint();
         }
-        uint256 tokens = (balance - tokensLastMinted) * mintMinterRatio() / 10000;
+        uint256 tokens =
+            (balance - tokensLastMinted) * mintMinterRatio() / 10000;
         setLastMinterMinted(balance);
         _mint(account, tokens);
         return tokens;
@@ -100,7 +103,12 @@ abstract contract ERC20ProofOfMinter is Context, ERC20 {
     /// @notice Mints the minted tokens for the configured contracts and sender.
     /// @dev Mints the minted tokens for the configured contracts and sender.
     /// @return tokens (uint256) - the amount of tokens minted.
-    function mintMinterMinted() public payable virtual returns (uint256 tokens) {
+    function mintMinterMinted()
+        public
+        payable
+        virtual
+        returns (uint256 tokens)
+    {
         address sender = _msgSender();
         beforeMintMinterMinted(sender, sender);
         tokens = _doMintMinterMinted(sender);

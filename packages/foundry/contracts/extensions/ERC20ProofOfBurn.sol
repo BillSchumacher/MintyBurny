@@ -5,11 +5,9 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "./ERC20MintyBurnyErrors.sol";
 
-
 /// @title A smart contract that checks for burned tokens and mints new tokens based on the burned tokens.
 /// @author BillSchumacher
 abstract contract ERC20ProofOfBurn is Context, ERC20 {
-
     uint256 private _lastBurned;
     address[] internal _burnAddresses;
     address[] internal _burnContracts;

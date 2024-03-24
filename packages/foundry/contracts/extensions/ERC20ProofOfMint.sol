@@ -8,13 +8,10 @@ import "./ERC20MintyBurnyErrors.sol";
 /// @title A smart contract that checks for minted tokens and mints new tokens based on the minted tokens.
 /// @author BillSchumacher
 abstract contract ERC20ProofOfMint is Context, ERC20 {
-
     uint256 private _lastMinted;
     address[] internal _mintContracts;
 
-    constructor(
-        address[] memory mintContracts
-    ) {
+    constructor(address[] memory mintContracts) {
         _mintContracts = mintContracts;
     }
 
@@ -55,7 +52,6 @@ abstract contract ERC20ProofOfMint is Context, ERC20 {
     function mintRatio() public virtual returns (uint256) {
         return 5000;
     }
-
 
     /// @notice Get the ratio of tokens to mint for ProofOfMint.
     /// @dev Returns the ratio of tokens to mint for ProofOfMint. Override to customize. Divided by 10000. 5000 = 0.5 (default)

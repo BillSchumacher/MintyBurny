@@ -24,8 +24,8 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintBurned();
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.balanceOf(address(0)) * burntMintyBurny.burnMintRatio()
-                    / 10000
+                == mintyBurny.balanceOf(address(0))
+                    * burntMintyBurny.burnMintRatio() / 10000
         );
         assertTrue(
             burntMintyBurny.lastBurned() == mintyBurny.balanceOf(address(0))
@@ -47,13 +47,13 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintBurnedFor(vm.addr(1));
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.balanceOf(address(0)) * burntMintyBurny.burnMintRatio()
-                    / 10000
+                == mintyBurny.balanceOf(address(0))
+                    * burntMintyBurny.burnMintRatio() / 10000
         );
         assertTrue(
             burntMintyBurny.balanceOf(vm.addr(1))
-                == mintyBurny.balanceOf(address(0)) * burntMintyBurny.burnMintRatio()
-                    / 10000
+                == mintyBurny.balanceOf(address(0))
+                    * burntMintyBurny.burnMintRatio() / 10000
         );
     }
 
@@ -84,8 +84,7 @@ contract BurntMintyBurnyTest is Test {
 
     function testCurrentMinted() public {
         assertTrue(
-            burntMintyBurny.getCurrentMinted()
-                == mintyBurny.totalSupply()
+            burntMintyBurny.getCurrentMinted() == mintyBurny.totalSupply()
         );
     }
 
@@ -200,7 +199,6 @@ contract BurntMintyBurnyTest is Test {
         assertTrue(burntMintyBurny.burnMintRatio() == 5000);
     }
 
-
     function testMintBurnerBurned() public {
         vm.deal(vm.addr(1), 100000 * 10 ** 18);
         vm.startPrank(vm.addr(1));
@@ -210,16 +208,18 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintBurnerBurned();
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.burnedFrom(vm.addr(1)) * burntMintyBurny.mintBurnerRatio()
-                    / 10000
+                == mintyBurny.burnedFrom(vm.addr(1))
+                    * burntMintyBurny.mintBurnerRatio() / 10000
         );
         assertTrue(
-            burntMintyBurny.lastBurnerBurned() == mintyBurny.burnedFrom(vm.addr(1))
+            burntMintyBurny.lastBurnerBurned()
+                == mintyBurny.burnedFrom(vm.addr(1))
         );
 
         try burntMintyBurny.mintBurnerBurned() {
             assertTrue(
-                false, "mintBurnerBurned() should revert when no tokens to mint."
+                false,
+                "mintBurnerBurned() should revert when no tokens to mint."
             );
         } catch (bytes memory reason) {
             bytes4 expectedSelector = NoTokensToMint.selector;
@@ -238,24 +238,24 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintBurnerBurnedFor(vm.addr(2));
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.burnedFrom(vm.addr(1)) * burntMintyBurny.mintBurnerRatio()
-                    / 10000
+                == mintyBurny.burnedFrom(vm.addr(1))
+                    * burntMintyBurny.mintBurnerRatio() / 10000
         );
         assertTrue(
-            burntMintyBurny.lastBurnerBurned() == mintyBurny.burnedFrom(vm.addr(1))
+            burntMintyBurny.lastBurnerBurned()
+                == mintyBurny.burnedFrom(vm.addr(1))
         );
         assertTrue(
             burntMintyBurny.balanceOf(vm.addr(2))
-                == mintyBurny.burnedFrom(vm.addr(1)) * burntMintyBurny.mintBurnerRatio()
-                    / 10000
+                == mintyBurny.burnedFrom(vm.addr(1))
+                    * burntMintyBurny.mintBurnerRatio() / 10000
         );
-        assertTrue(
-            burntMintyBurny.balanceOf(vm.addr(1)) == 0
-        );
+        assertTrue(burntMintyBurny.balanceOf(vm.addr(1)) == 0);
 
         try burntMintyBurny.mintBurnerBurned() {
             assertTrue(
-                false, "mintBurnerBurned() should revert when no tokens to mint."
+                false,
+                "mintBurnerBurned() should revert when no tokens to mint."
             );
         } catch (bytes memory reason) {
             bytes4 expectedSelector = NoTokensToMint.selector;
@@ -272,16 +272,12 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintMinted();
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio()
-                    / 10000
+                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio() / 10000
         );
-        assertTrue(
-            burntMintyBurny.lastMinted() == mintyBurny.totalSupply()
-        );
+        assertTrue(burntMintyBurny.lastMinted() == mintyBurny.totalSupply());
         assertTrue(
             burntMintyBurny.balanceOf(vm.addr(1))
-                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio()
-                    / 10000
+                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio() / 10000
         );
 
         try burntMintyBurny.mintMinted() {
@@ -303,20 +299,14 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintMintedFor(vm.addr(2));
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio()
-                    / 10000
+                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio() / 10000
         );
-        assertTrue(
-            burntMintyBurny.lastMinted() == mintyBurny.totalSupply()
-        );
+        assertTrue(burntMintyBurny.lastMinted() == mintyBurny.totalSupply());
         assertTrue(
             burntMintyBurny.balanceOf(vm.addr(2))
-                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio()
-                    / 10000
+                == mintyBurny.totalSupply() * burntMintyBurny.mintedRatio() / 10000
         );
-        assertTrue(
-            burntMintyBurny.balanceOf(vm.addr(1)) == 0
-        );
+        assertTrue(burntMintyBurny.balanceOf(vm.addr(1)) == 0);
 
         try burntMintyBurny.mintMinted() {
             assertTrue(
@@ -338,16 +328,17 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintMinterMinted();
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.balanceOf(vm.addr(1)) * burntMintyBurny.mintMinterRatio()
-                    / 10000
+                == mintyBurny.balanceOf(vm.addr(1))
+                    * burntMintyBurny.mintMinterRatio() / 10000
         );
         assertTrue(
-            burntMintyBurny.lastMinterMinted() == mintyBurny.balanceOf(vm.addr(1))
+            burntMintyBurny.lastMinterMinted()
+                == mintyBurny.balanceOf(vm.addr(1))
         );
         assertTrue(
             burntMintyBurny.balanceOf(vm.addr(1))
-                == mintyBurny.balanceOf(vm.addr(1)) * burntMintyBurny.mintMinterRatio()
-                    / 10000
+                == mintyBurny.balanceOf(vm.addr(1))
+                    * burntMintyBurny.mintMinterRatio() / 10000
         );
 
         try burntMintyBurny.mintMinterMinted() {
@@ -370,25 +361,24 @@ contract BurntMintyBurnyTest is Test {
         burntMintyBurny.mintMinterMintedFor(vm.addr(2));
         assertTrue(
             burntMintyBurny.totalSupply() - minted
-                == mintyBurny.mintedBy(vm.addr(1)) * burntMintyBurny.mintMinterRatio()
-                    / 10000
+                == mintyBurny.mintedBy(vm.addr(1))
+                    * burntMintyBurny.mintMinterRatio() / 10000
         );
         assertTrue(
-            burntMintyBurny.lastMinterMinted() == mintyBurny.balanceOf(vm.addr(1))
+            burntMintyBurny.lastMinterMinted()
+                == mintyBurny.balanceOf(vm.addr(1))
         );
         assertTrue(
             burntMintyBurny.balanceOf(vm.addr(2))
-                == mintyBurny.mintedBy(vm.addr(1)) * burntMintyBurny.mintMinterRatio()
-                    / 10000
+                == mintyBurny.mintedBy(vm.addr(1))
+                    * burntMintyBurny.mintMinterRatio() / 10000
         );
 
-        assertTrue(
-            burntMintyBurny.balanceOf(vm.addr(1))
-                == 0
-        );
+        assertTrue(burntMintyBurny.balanceOf(vm.addr(1)) == 0);
         try burntMintyBurny.mintMinterMintedFor(vm.addr(2)) {
             assertTrue(
-                false, "mintMinterMintedFor() should revert when no tokens to mint."
+                false,
+                "mintMinterMintedFor() should revert when no tokens to mint."
             );
         } catch (bytes memory reason) {
             bytes4 expectedSelector = NoTokensToMint.selector;

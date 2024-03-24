@@ -10,12 +10,10 @@ import "./ERC20MintyBurnyErrors.sol";
 /// requires burnerContracts to implement ERC20BurnRegistry
 /// @author BillSchumacher
 abstract contract ERC20ProofOfBurner is Context, ERC20 {
-    mapping (address => uint256) private _lastBurnerBurned;
+    mapping(address => uint256) private _lastBurnerBurned;
     address[] internal _burnerContracts;
 
-    constructor(
-        address[] memory burnerContracts
-    ) {
+    constructor(address[] memory burnerContracts) {
         _burnerContracts = burnerContracts;
     }
 
@@ -45,7 +43,8 @@ abstract contract ERC20ProofOfBurner is Context, ERC20 {
         uint256 contractLength = eligibleBurnerContracts.length;
         address sender = _msgSender();
         for (uint256 i; i < contractLength; i++) {
-            ERC20BurnRegistry tokenContract = ERC20BurnRegistry(eligibleBurnerContracts[i]);
+            ERC20BurnRegistry tokenContract =
+                ERC20BurnRegistry(eligibleBurnerContracts[i]);
             balance += tokenContract.burnedFrom(sender);
         }
         return balance;
@@ -76,7 +75,10 @@ abstract contract ERC20ProofOfBurner is Context, ERC20 {
     /// @dev Update the mint registry or perform other accounting. Override to customize.
     /// @param account (address) - the address of the account.
     /// @param value (uint256) - the amount of tokens minted.
-    function afterMintBurnerBurned(address account, uint256 value) internal virtual {}
+    function afterMintBurnerBurned(
+        address account,
+        uint256 value
+    ) internal virtual {}
 
     /// @dev Mints the burned tokens for the configured contracts and addresses.
     /// @param account (address) - the address of the account.
@@ -91,7 +93,8 @@ abstract contract ERC20ProofOfBurner is Context, ERC20 {
         if (balance <= tokensLastBurned) {
             revert NoTokensToMint();
         }
-        uint256 tokens = (balance - tokensLastBurned) * mintBurnerRatio() / 10000;
+        uint256 tokens =
+            (balance - tokensLastBurned) * mintBurnerRatio() / 10000;
         setLastBurnerBurned(balance);
         _mint(account, tokens);
         return tokens;
@@ -100,7 +103,12 @@ abstract contract ERC20ProofOfBurner is Context, ERC20 {
     /// @notice Mints the burned tokens for the configured contracts and burner.
     /// @dev Mints the burned tokens for the configured contracts and burner.
     /// @return tokens (uint256) - the amount of tokens minted.
-    function mintBurnerBurned() public payable virtual returns (uint256 tokens) {
+    function mintBurnerBurned()
+        public
+        payable
+        virtual
+        returns (uint256 tokens)
+    {
         address sender = _msgSender();
         beforeMintBurnerBurned(sender, sender);
         tokens = _doMintBurnerBurned(sender);

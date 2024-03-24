@@ -35,7 +35,17 @@ contract BurntMintyBurny is
         burn(500000 * 10 ** decimals());
     }
 
-    function mintRatio() public view override (ERC20ProofOfBurn, ERC20ProofOfBurner, ERC20ProofOfMint, ERC20ProofOfMinter) returns (uint256) {
+    function mintRatio()
+        public
+        view
+        override(
+            ERC20ProofOfBurn,
+            ERC20ProofOfBurner,
+            ERC20ProofOfMint,
+            ERC20ProofOfMinter
+        )
+        returns (uint256)
+    {
         return 5000;
     }
 
