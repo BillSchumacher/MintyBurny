@@ -1,0 +1,77 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "./ERC20AirDropErrors.sol";
+
+abstract contract ERC20AirDropTransfer is ERC20 {
+    event AirDropTransfer(
+        address indexed from, address indexed to, uint256 value
+    );
+
+    function beforeAirDropTransfer() internal virtual {}
+    function afterAirDropTransfer() internal virtual {}
+
+    /// @notice Airdrop tokens to the given addresses via transfer.
+    /// @dev Airdrop tokens to the given addresses via transfer.
+    /// @param addresses (address[] memory) - the addresses to airdrop to.
+    /// @param value (uint256) - the value to airdrop.
+    function airDropTransfer(
+        address[] memory addresses,
+        uint256 value
+    ) public virtual {
+        beforeAirDropTransfer();
+        uint256 len = addresses.length;
+        address sender = msg.sender;
+        for (uint256 i; i < len; i++) {
+            address addr = addresses[i];
+            _transfer(sender, addr, value);
+            emit AirDropTransfer(sender, addr, value);
+        }
+        afterAirDropTransfer();
+    }
+
+    /// @notice Airdrop tokens to the given addresses via transfer split evenly.
+    /// @dev Airdrop tokens to the given addresses via transfer split evenly.
+    /// @param addresses (address[] memory) - the addresses to airdrop to.
+    /// @param value (uint256) - the value to airdrop split among the addresses.
+    function airDropTransferSplit(
+        address[] memory addresses,
+        uint256 value
+    ) public virtual {
+        beforeAirDropTransfer();
+        uint256 len = addresses.length;
+        address sender = msg.sender;
+        uint256 splitValue = value / len;
+        for (uint256 i; i < len; i++) {
+            address addr = addresses[i];
+            _transfer(sender, addr, splitValue);
+            emit AirDropTransfer(sender, addr, splitValue);
+        }
+        afterAirDropTransfer();
+    }
+
+    /// @notice Airdrop tokens to the given addresses via transfer.
+    /// @dev Airdrop tokens to the given addresses via transfer.
+    /// @param addresses (address[] memory) - the addresses to airdrop to.
+    /// @param values (uint256[] memory) - the values to airdrop.
+    function airDropTransferValues(
+        address[] memory addresses,
+        uint256[] memory values
+    ) public virtual {
+        uint256 len = addresses.length;
+        uint256 valLen = values.length;
+        if (len != valLen) {
+            revert ERC20AirDropMismatch(len, valLen);
+        }
+        address sender = msg.sender;
+        beforeAirDropTransfer();
+        for (uint256 i; i < len; i++) {
+            address addr = addresses[i];
+            uint256 value = values[i];
+            _transfer(sender, addr, value);
+            emit AirDropTransfer(sender, addr, value);
+        }
+        afterAirDropTransfer();
+    }
+}

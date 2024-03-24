@@ -12,6 +12,62 @@ abstract contract ERC20MintRegistry is Context, ERC20 {
     uint256 private _totalMinters;
     uint256 private _totalMinted;
 
+    /// @notice Get the address of the minter at the given index.
+    /// @dev Returns the address of the minter at the given index.
+    /// @param index (uint256) - the index of the minter.
+    /// @return (address) - the address of the minter.
+    function minter(uint256 index) public view returns (address) {
+        return _mintAddresses[index];
+    }
+
+    /// @notice Get the total amount of minters.
+    /// @dev Returns the total amount of minters.
+    /// @return (uint256) - the total amount of minters.
+    function totalMinters() public view returns (uint256) {
+        return _totalMinters;
+    }
+
+    /// @notice Get the addresses of the first `amount` minters.
+    /// @dev Returns the addresses of the first `amount` minters.
+    /// @param amount (uint256) - the amount of minters.
+    /// @return (address[] memory) - the addresses of the minters.
+    function firstMinters(uint256 amount)
+        public
+        view
+        returns (address[] memory)
+    {
+        address[] memory minters = new address[](amount);
+        mapping(uint256 => address) storage mintAddresses = _mintAddresses;
+        if (_totalMinters < amount) {
+            amount = _totalMinters;
+        }
+        for (uint256 i = 0; i < amount; i++) {
+            minters[i] = mintAddresses[i];
+        }
+        return minters;
+    }
+
+    /// @notice Get the addresses of the last `amount` minters.
+    /// @dev Returns the addresses of the last `amount` minters.
+    /// @param amount (uint256) - the amount of minters.
+    /// @return (address[] memory) - the addresses of the minters.
+    function lastMinters(uint256 amount)
+        public
+        view
+        returns (address[] memory)
+    {
+        address[] memory minters = new address[](amount);
+        mapping(uint256 => address) storage mintAddresses = _mintAddresses;
+        uint256 totalMinters = _totalMinters;
+        if (totalMinters < amount) {
+            amount = totalMinters;
+        }
+        for (uint256 i = 0; i < amount; i++) {
+            minters[i] = mintAddresses[totalMinters - amount + i];
+        }
+        return minters;
+    }
+
     /// @notice Get the amount of tokens minted by the given address.
     /// @dev Returns the amount of tokens minted by the given address.
     /// @param account (address) - the address of the account.
