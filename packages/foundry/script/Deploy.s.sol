@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "../contracts/MintyBurny.sol";
-import "../contracts/BurntMintyBurny.sol";
+import "../contracts/token/ERC20/examples/ERC20MintyBurny.sol";
+import "../contracts/token/ERC20/examples/ERC20BurntMintyBurny.sol";
 import "./DeployHelpers.s.sol";
 
 contract DeployScript is ScaffoldETHDeploy {
@@ -16,7 +16,7 @@ contract DeployScript is ScaffoldETHDeploy {
             );
         }
         vm.startBroadcast(deployerPrivateKey);
-        MintyBurny mintyBurnyContract = new MintyBurny(); //vm.addr(deployerPrivateKey)
+        ERC20MintyBurny mintyBurnyContract = new ERC20MintyBurny(); //vm.addr(deployerPrivateKey)
         console.logString(
             string.concat(
                 "MintyBurny deployed at: ",
@@ -27,8 +27,8 @@ contract DeployScript is ScaffoldETHDeploy {
         address[] memory contractAddresses = new address[](1);
         burnAddresses[0] = address(0);
         contractAddresses[0] = address(mintyBurnyContract);
-        BurntMintyBurny burntMintyBurnyContract =
-            new BurntMintyBurny(burnAddresses, contractAddresses); //vm.addr(deployerPrivateKey)
+        ERC20BurntMintyBurny burntMintyBurnyContract =
+            new ERC20BurntMintyBurny(burnAddresses, contractAddresses); //vm.addr(deployerPrivateKey)
         console.logString(
             string.concat(
                 "BurntMintyBurny deployed at: ",

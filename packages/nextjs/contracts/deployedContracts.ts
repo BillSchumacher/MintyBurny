@@ -6,8 +6,8 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    MintyBurny: {
-      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    ERC20MintyBurny: {
+      address: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
       abi: [
         {
           type: "constructor",
@@ -137,6 +137,25 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "burner",
+          inputs: [
+            {
+              name: "index",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "burns",
           inputs: [],
           outputs: [
@@ -170,6 +189,82 @@ const deployedContracts = {
               name: "",
               type: "uint8",
               internalType: "uint8",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "firstBurners",
+          inputs: [
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "address[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "firstMinters",
+          inputs: [
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "address[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "lastBurners",
+          inputs: [
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "address[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "lastMinters",
+          inputs: [
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "address[]",
             },
           ],
           stateMutability: "view",
@@ -220,6 +315,25 @@ const deployedContracts = {
               name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "minter",
+          inputs: [
+            {
+              name: "index",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
             },
           ],
           stateMutability: "view",
@@ -278,7 +392,33 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "totalBurners",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "totalMinted",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "totalMinters",
           inputs: [],
           outputs: [
             {
@@ -524,26 +664,34 @@ const deployedContracts = {
         approve: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         decimals: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        mint: "contracts/extensions/ERC20MintRegistry.sol",
-        mintFor: "contracts/extensions/ERC20MintRegistry.sol",
-        mintedBy: "contracts/extensions/ERC20MintRegistry.sol",
-        minters: "contracts/extensions/ERC20MintRegistry.sol",
+        firstMinters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        lastMinters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        mint: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        mintFor: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        mintedBy: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        minter: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        minters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
         name: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         symbol: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        totalMinted: "contracts/extensions/ERC20MintRegistry.sol",
+        totalMinted: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        totalMinters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
         totalSupply: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         transfer: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        burn: "contracts/extensions/ERC20BurnRegistry.sol",
-        burnFrom: "contracts/extensions/ERC20BurnRegistry.sol",
-        burnedFrom: "contracts/extensions/ERC20BurnRegistry.sol",
-        burns: "contracts/extensions/ERC20BurnRegistry.sol",
-        totalBurned: "contracts/extensions/ERC20BurnRegistry.sol",
+        burn: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        burnFrom: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        burnedFrom: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        burner: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        burns: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        firstBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        lastBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        totalBurned: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        totalBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
         cap: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
       },
     },
-    BurntMintyBurny: {
-      address: "0x9A676e781A523b5d0C0e43731313A708CB607508",
+    ERC20BurntMintyBurny: {
+      address: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
       abi: [
         {
           type: "constructor",
@@ -665,6 +813,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "burnMintRatio",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "burnedFrom",
           inputs: [
             {
@@ -678,6 +839,25 @@ const deployedContracts = {
               name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "burner",
+          inputs: [
+            {
+              name: "index",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
             },
           ],
           stateMutability: "view",
@@ -723,6 +903,44 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "firstBurners",
+          inputs: [
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "address[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "firstMinters",
+          inputs: [
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "address[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getCurrentBurned",
           inputs: [],
           outputs: [
@@ -736,7 +954,46 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getMintFee",
+          name: "getCurrentBurnerBurned",
+          inputs: [],
+          outputs: [
+            {
+              name: "balance",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "getCurrentMinted",
+          inputs: [],
+          outputs: [
+            {
+              name: "balance",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "getCurrentMinterMinted",
+          inputs: [],
+          outputs: [
+            {
+              name: "balance",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "lastBurned",
           inputs: [],
           outputs: [
             {
@@ -749,13 +1006,77 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "lastBurned",
+          name: "lastBurnerBurned",
           inputs: [],
           outputs: [
             {
               name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "lastBurners",
+          inputs: [
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "address[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "lastMinted",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "lastMinterMinted",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "lastMinters",
+          inputs: [
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "address[]",
             },
           ],
           stateMutability: "view",
@@ -807,6 +1128,51 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "mintBurnerBurned",
+          inputs: [],
+          outputs: [
+            {
+              name: "tokens",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "mintBurnerBurnedFor",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "tokens",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "mintBurnerRatio",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "mintFor",
           inputs: [
             {
@@ -825,6 +1191,83 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "mintMinted",
+          inputs: [],
+          outputs: [
+            {
+              name: "tokens",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "mintMintedFor",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "tokens",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "mintMinterMinted",
+          inputs: [],
+          outputs: [
+            {
+              name: "tokens",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "mintMinterMintedFor",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "tokens",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "mintMinterRatio",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "mintRatio",
           inputs: [],
           outputs: [
@@ -834,7 +1277,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "pure",
         },
         {
           type: "function",
@@ -851,6 +1294,38 @@ const deployedContracts = {
               name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "mintedRatio",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "minter",
+          inputs: [
+            {
+              name: "index",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
             },
           ],
           stateMutability: "view",
@@ -909,7 +1384,33 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "totalBurners",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "totalMinted",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "totalMinters",
           inputs: [],
           outputs: [
             {
@@ -1151,28 +1652,7 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "InsufficientMintFee",
-          inputs: [
-            {
-              name: "mintFee",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "msgValue",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-        },
-        {
-          type: "error",
           name: "NoTokensToMint",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "UseMintBurnedInsteadOfMint",
           inputs: [],
         },
       ],
@@ -1180,27 +1660,51 @@ const deployedContracts = {
         allowance: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         approve: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        burnMintRatio: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
         decimals: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        getCurrentBurned: "contracts/extensions/ERC20ProofOfBurn.sol",
-        lastBurned: "contracts/extensions/ERC20ProofOfBurn.sol",
-        mintBurned: "contracts/extensions/ERC20ProofOfBurn.sol",
-        mintBurnedFor: "contracts/extensions/ERC20ProofOfBurn.sol",
-        mintRatio: "contracts/extensions/ERC20ProofOfBurn.sol",
+        getCurrentBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
+        lastBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
+        mintBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
+        mintBurnedFor: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
+        mintRatio: "contracts/token/ERC20/extensions/ERC20ProofOfMinter.sol",
         name: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         symbol: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         totalSupply: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         transfer: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        mint: "contracts/extensions/ERC20MintRegistry.sol",
-        mintFor: "contracts/extensions/ERC20MintRegistry.sol",
-        mintedBy: "contracts/extensions/ERC20MintRegistry.sol",
-        minters: "contracts/extensions/ERC20MintRegistry.sol",
-        totalMinted: "contracts/extensions/ERC20MintRegistry.sol",
-        burn: "contracts/extensions/ERC20BurnRegistry.sol",
-        burnFrom: "contracts/extensions/ERC20BurnRegistry.sol",
-        burnedFrom: "contracts/extensions/ERC20BurnRegistry.sol",
-        burns: "contracts/extensions/ERC20BurnRegistry.sol",
-        totalBurned: "contracts/extensions/ERC20BurnRegistry.sol",
+        getCurrentBurnerBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurner.sol",
+        lastBurnerBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurner.sol",
+        mintBurnerBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurner.sol",
+        mintBurnerBurnedFor: "contracts/token/ERC20/extensions/ERC20ProofOfBurner.sol",
+        mintBurnerRatio: "contracts/token/ERC20/extensions/ERC20ProofOfBurner.sol",
+        getCurrentMinted: "contracts/token/ERC20/extensions/ERC20ProofOfMint.sol",
+        lastMinted: "contracts/token/ERC20/extensions/ERC20ProofOfMint.sol",
+        mintMinted: "contracts/token/ERC20/extensions/ERC20ProofOfMint.sol",
+        mintMintedFor: "contracts/token/ERC20/extensions/ERC20ProofOfMint.sol",
+        mintedRatio: "contracts/token/ERC20/extensions/ERC20ProofOfMint.sol",
+        getCurrentMinterMinted: "contracts/token/ERC20/extensions/ERC20ProofOfMinter.sol",
+        lastMinterMinted: "contracts/token/ERC20/extensions/ERC20ProofOfMinter.sol",
+        mintMinterMinted: "contracts/token/ERC20/extensions/ERC20ProofOfMinter.sol",
+        mintMinterMintedFor: "contracts/token/ERC20/extensions/ERC20ProofOfMinter.sol",
+        mintMinterRatio: "contracts/token/ERC20/extensions/ERC20ProofOfMinter.sol",
+        firstMinters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        lastMinters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        mint: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        mintFor: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        mintedBy: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        minter: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        minters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        totalMinted: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        totalMinters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
+        burn: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        burnFrom: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        burnedFrom: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        burner: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        burns: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        firstBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        lastBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        totalBurned: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
+        totalBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
         cap: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
       },
     },

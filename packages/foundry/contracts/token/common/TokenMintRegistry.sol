@@ -1,12 +1,10 @@
-//SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.25;
 
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {Context} from "@openzeppelin/contracts/utils/Context.sol";
-
-/// @title A smart contract that allows minting tokens and tracking the minting.
+/// @title Mint registry supporting a ERC20 token.
 /// @author BillSchumacher
-abstract contract ERC20MintRegistry is Context, ERC20 {
+/// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
+contract TokenMintRegistry {
     mapping(address => uint256) private _minted;
     mapping(uint256 => address) private _mintAddresses;
     uint256 private _totalMinters;
@@ -36,15 +34,17 @@ abstract contract ERC20MintRegistry is Context, ERC20 {
         view
         returns (address[] memory)
     {
-        address[] memory minters = new address[](amount);
+        uint256 allMinters = _totalMinters;
+        if (allMinters < amount) {
+            amount = allMinters;
+        }
+        address[] memory result = new address[](amount);
         mapping(uint256 => address) storage mintAddresses = _mintAddresses;
-        if (_totalMinters < amount) {
-            amount = _totalMinters;
+
+        for (uint256 i = 0; i < amount; ++i) {
+            result[i] = mintAddresses[i];
         }
-        for (uint256 i = 0; i < amount; i++) {
-            minters[i] = mintAddresses[i];
-        }
-        return minters;
+        return result;
     }
 
     /// @notice Get the addresses of the last `amount` minters.
@@ -56,16 +56,17 @@ abstract contract ERC20MintRegistry is Context, ERC20 {
         view
         returns (address[] memory)
     {
-        address[] memory minters = new address[](amount);
+        uint256 allMinters = _totalMinters;
+        if (allMinters < amount) {
+            amount = allMinters;
+        }
+        address[] memory results = new address[](amount);
         mapping(uint256 => address) storage mintAddresses = _mintAddresses;
-        uint256 totalMinters = _totalMinters;
-        if (totalMinters < amount) {
-            amount = totalMinters;
+
+        for (uint256 i = 0; i < amount; ++i) {
+            results[i] = mintAddresses[allMinters - amount + i];
         }
-        for (uint256 i = 0; i < amount; i++) {
-            minters[i] = mintAddresses[totalMinters - amount + i];
-        }
-        return minters;
+        return results;
     }
 
     /// @notice Get the amount of tokens minted by the given address.
@@ -108,30 +109,10 @@ abstract contract ERC20MintRegistry is Context, ERC20 {
         uint256 value
     ) internal virtual {
         _totalMinted += value;
-        _minted[account] += value;
-        _mintAddresses[_totalMinters] = account;
-        _totalMinters += 1;
-    }
-
-    /// @notice Mints a `value` amount of tokens.
-    /// @dev Mints a `value` amount of tokens for the caller.
-    /// See {ERC20-_mint}.
-    /// @param value (uint256) - the amount of tokens to mint.
-    function mint(uint256 value) public payable virtual {
-        address sender = _msgSender();
-        beforeMint(sender, sender, value);
-        _mint(sender, value);
-        updateMintRegistry(sender, value);
-    }
-
-    /// @notice Mints a `value` amount of tokens for `account`.
-    /// @dev Mints a `value` amount of tokens for `account`.
-    /// See {ERC20-_mint}.
-    /// @param account (address) - the address of the account.
-    /// @param value (uint256) - the amount of tokens to mint.
-    function mintFor(address account, uint256 value) public payable virtual {
-        beforeMint(_msgSender(), account, value);
-        _mint(account, value);
-        updateMintRegistry(account, value);
+        unchecked {
+            _minted[account] += value;
+            _mintAddresses[_totalMinters] = account;
+            _totalMinters += 1;
+        }
     }
 }

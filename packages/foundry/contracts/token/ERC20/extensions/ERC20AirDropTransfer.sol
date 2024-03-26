@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./ERC20AirDropErrors.sol";
 
+/// @title Air drop support for ERC20 tokens, using transfers.
+/// @author BillSchumacher
+/// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
 abstract contract ERC20AirDropTransfer is ERC20 {
     event AirDropTransfer(
         address indexed from, address indexed to, uint256 value
@@ -23,7 +26,7 @@ abstract contract ERC20AirDropTransfer is ERC20 {
         beforeAirDropTransfer();
         uint256 len = addresses.length;
         address sender = msg.sender;
-        for (uint256 i; i < len; i++) {
+        for (uint256 i; i < len; ++i) {
             address addr = addresses[i];
             _transfer(sender, addr, value);
             emit AirDropTransfer(sender, addr, value);
@@ -43,7 +46,7 @@ abstract contract ERC20AirDropTransfer is ERC20 {
         uint256 len = addresses.length;
         address sender = msg.sender;
         uint256 splitValue = value / len;
-        for (uint256 i; i < len; i++) {
+        for (uint256 i; i < len; ++i) {
             address addr = addresses[i];
             _transfer(sender, addr, splitValue);
             emit AirDropTransfer(sender, addr, splitValue);
@@ -66,7 +69,7 @@ abstract contract ERC20AirDropTransfer is ERC20 {
         }
         address sender = msg.sender;
         beforeAirDropTransfer();
-        for (uint256 i; i < len; i++) {
+        for (uint256 i; i < len; ++i) {
             address addr = addresses[i];
             uint256 value = values[i];
             _transfer(sender, addr, value);

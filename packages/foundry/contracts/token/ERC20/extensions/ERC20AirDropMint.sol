@@ -1,14 +1,23 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./ERC20AirDropErrors.sol";
 
+/// @title Air drop support for ERC20 tokens, using minting.
+/// @author BillSchumacher
+/// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
 abstract contract ERC20AirDropMint is ERC20 {
     event AirDropMint(address indexed to, uint256 value);
 
-    function beforeAirDropMint() internal virtual {}
-    function afterAirDropMint() internal virtual {}
+    function beforeAirDropMint(
+        address account,
+        uint256 value
+    ) internal virtual {}
+    function afterAirDropMint(
+        address account,
+        uint256 value
+    ) internal virtual {}
 
     /// @notice Airdrop tokens to the given addresses via minting.
     /// @dev Airdrop tokens to the given addresses via minting.
@@ -19,13 +28,13 @@ abstract contract ERC20AirDropMint is ERC20 {
         uint256 value
     ) public virtual {
         uint256 len = addresses.length;
-        beforeAirDropMint();
-        for (uint256 i; i < len; i++) {
+        for (uint256 i; i < len; ++i) {
             address to = addresses[i];
+            beforeAirDropMint(to, value);
             _mint(to, value);
             emit AirDropMint(to, value);
+            afterAirDropMint(to, value);
         }
-        afterAirDropMint();
     }
 
     /// @notice Airdrop tokens to the given addresses via minting split evenly.
@@ -37,14 +46,14 @@ abstract contract ERC20AirDropMint is ERC20 {
         uint256 value
     ) public virtual {
         uint256 len = addresses.length;
-        beforeAirDropMint();
         uint256 splitValue = value / len;
-        for (uint256 i; i < len; i++) {
+        for (uint256 i; i < len; ++i) {
             address to = addresses[i];
+            beforeAirDropMint(to, splitValue);
             _mint(to, splitValue);
             emit AirDropMint(to, splitValue);
+            afterAirDropMint(to, splitValue);
         }
-        afterAirDropMint();
     }
 
     /// @notice Airdrop tokens to the given addresses.
@@ -60,13 +69,14 @@ abstract contract ERC20AirDropMint is ERC20 {
         if (len != valLen) {
             revert ERC20AirDropMismatch(len, valLen);
         }
-        beforeAirDropMint();
-        for (uint256 i; i < len; i++) {
+        for (uint256 i; i < len; ++i) {
             address to = addresses[i];
             uint256 value = values[i];
+
+            beforeAirDropMint(to, value);
             _mint(to, value);
+            afterAirDropMint(to, value);
             emit AirDropMint(to, value);
         }
-        afterAirDropMint();
     }
 }

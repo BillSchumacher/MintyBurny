@@ -2,13 +2,13 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../contracts/MintyBurny.sol";
+import "../contracts/token/ERC20/examples/ERC20MintyBurny.sol";
 
 contract MintyBurnyTest is Test {
-    MintyBurny public mintyBurny;
+    ERC20MintyBurny public mintyBurny;
 
     function setUp() public {
-        mintyBurny = new MintyBurny();
+        mintyBurny = new ERC20MintyBurny();
     }
 
     function testZeroAddressHasBalance() public {

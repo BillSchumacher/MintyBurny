@@ -1,13 +1,18 @@
-//SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.25;
 
-import "./extensions/ERC20MintRegistry.sol";
-import "./extensions/ERC20BurnRegistry.sol";
+import "../extensions/ERC20MintRegistry.sol";
+import "../extensions/ERC20BurnRegistry.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 
 /// @title Example implementation contract for extensions.
 /// @author BillSchumacher
-contract MintyBurny is ERC20MintRegistry, ERC20BurnRegistry, ERC20Capped {
+/// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
+contract ERC20MintyBurny is
+    ERC20MintRegistry,
+    ERC20BurnRegistry,
+    ERC20Capped
+{
     constructor() ERC20("MintyBurny", "MB") ERC20Capped(2 ** 254) {
         mint(1000000 * 10 ** decimals());
         burn(500000 * 10 ** decimals());

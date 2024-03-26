@@ -2,21 +2,22 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../contracts/MintyBurny.sol";
-import "../contracts/BurntMintyBurny.sol";
-import "../contracts/extensions/ERC20MintyBurnyErrors.sol";
+import "../contracts/token/ERC20/examples/ERC20MintyBurny.sol";
+import "../contracts/token/ERC20/examples/ERC20BurntMintyBurny.sol";
+import "../contracts/token/ERC20/extensions/ERC20MintyBurnyErrors.sol";
 
 contract BurntMintyBurnyTest is Test {
-    MintyBurny public mintyBurny;
-    BurntMintyBurny public burntMintyBurny;
+    ERC20MintyBurny public mintyBurny;
+    ERC20BurntMintyBurny public burntMintyBurny;
 
     function setUp() public {
-        mintyBurny = new MintyBurny();
+        mintyBurny = new ERC20MintyBurny();
         address[] memory burnAddresses = new address[](1);
         burnAddresses[0] = address(0);
         address[] memory contractAddresses = new address[](1);
         contractAddresses[0] = address(mintyBurny);
-        burntMintyBurny = new BurntMintyBurny(burnAddresses, contractAddresses);
+        burntMintyBurny =
+            new ERC20BurntMintyBurny(burnAddresses, contractAddresses);
     }
 
     function testMintBurnt() public {
@@ -183,19 +184,19 @@ contract BurntMintyBurnyTest is Test {
         }
     }
 
-    function testMintRatio() public {
+    function testMintRatio() public view {
         assertTrue(burntMintyBurny.mintRatio() == 5000);
     }
 
-    function testMintMinterRatio() public {
+    function testMintMinterRatio() public view {
         assertTrue(burntMintyBurny.mintMinterRatio() == 5000);
     }
 
-    function testMintBurnerRatio() public {
+    function testMintBurnerRatio() public view {
         assertTrue(burntMintyBurny.mintBurnerRatio() == 5000);
     }
 
-    function testMintBurnRatio() public {
+    function testMintBurnRatio() public view {
         assertTrue(burntMintyBurny.burnMintRatio() == 5000);
     }
 

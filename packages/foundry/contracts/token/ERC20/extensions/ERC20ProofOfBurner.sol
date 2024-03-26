@@ -1,5 +1,5 @@
-//SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.25;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
@@ -7,8 +7,9 @@ import "./ERC20BurnRegistry.sol";
 import "./ERC20MintyBurnyErrors.sol";
 
 /// @title A smart contract that checks for burned tokens and mints new tokens based on the burned tokens.
-/// requires burnerContracts to implement ERC20BurnRegistry
+/// @custom:requires burnerContracts to implement ERC20BurnRegistry
 /// @author BillSchumacher
+/// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
 abstract contract ERC20ProofOfBurner is Context, ERC20 {
     mapping(address => uint256) private _lastBurnerBurned;
     address[] internal _burnerContracts;
@@ -42,7 +43,7 @@ abstract contract ERC20ProofOfBurner is Context, ERC20 {
         address[] memory eligibleBurnerContracts = _burnerContracts;
         uint256 contractLength = eligibleBurnerContracts.length;
         address sender = _msgSender();
-        for (uint256 i; i < contractLength; i++) {
+        for (uint256 i; i < contractLength; ++i) {
             ERC20BurnRegistry tokenContract =
                 ERC20BurnRegistry(eligibleBurnerContracts[i]);
             balance += tokenContract.burnedFrom(sender);
@@ -53,14 +54,14 @@ abstract contract ERC20ProofOfBurner is Context, ERC20 {
     /// @notice Get the ratio of tokens to mint.
     /// @dev Returns the ratio of tokens to mint. Override to customize. Divided by 10000. 5000 = 0.5 (default)
     /// @return (uint256) - the ratio of tokens to mint.
-    function mintRatio() public virtual returns (uint256) {
+    function mintRatio() public pure virtual returns (uint256) {
         return 5000;
     }
 
     /// @notice Get the ratio of tokens to mint for ProofOfBurner.
     /// @dev Returns the ratio of tokens to mint for ProofOfBurner. Override to customize. Divided by 10000. 5000 = 0.5 (default)
     /// @return (uint256) - the ratio of tokens to mint.
-    function mintBurnerRatio() public virtual returns (uint256) {
+    function mintBurnerRatio() public view virtual returns (uint256) {
         return mintRatio();
     }
 

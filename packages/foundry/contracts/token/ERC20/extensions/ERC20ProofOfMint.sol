@@ -1,5 +1,5 @@
-//SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.25;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
@@ -7,6 +7,7 @@ import "./ERC20MintyBurnyErrors.sol";
 
 /// @title A smart contract that checks for minted tokens and mints new tokens based on the minted tokens.
 /// @author BillSchumacher
+/// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
 abstract contract ERC20ProofOfMint is Context, ERC20 {
     uint256 private _lastMinted;
     address[] internal _mintContracts;
@@ -39,7 +40,7 @@ abstract contract ERC20ProofOfMint is Context, ERC20 {
     {
         address[] memory eligibleMintContracts = _mintContracts;
         uint256 contractLength = _mintContracts.length;
-        for (uint256 i; i < contractLength; i++) {
+        for (uint256 i; i < contractLength; ++i) {
             ERC20 tokenContract = ERC20(eligibleMintContracts[i]);
             balance += tokenContract.totalSupply();
         }
@@ -49,14 +50,14 @@ abstract contract ERC20ProofOfMint is Context, ERC20 {
     /// @notice Get the ratio of tokens to mint.
     /// @dev Returns the ratio of tokens to mint. Override to customize. Divided by 10000. 5000 = 0.5 (default)
     /// @return (uint256) - the ratio of tokens to mint.
-    function mintRatio() public virtual returns (uint256) {
+    function mintRatio() public pure virtual returns (uint256) {
         return 5000;
     }
 
     /// @notice Get the ratio of tokens to mint for ProofOfMint.
     /// @dev Returns the ratio of tokens to mint for ProofOfMint. Override to customize. Divided by 10000. 5000 = 0.5 (default)
     /// @return (uint256) - the ratio of tokens to mint.
-    function mintedRatio() public virtual returns (uint256) {
+    function mintedRatio() public view virtual returns (uint256) {
         return mintRatio();
     }
 
