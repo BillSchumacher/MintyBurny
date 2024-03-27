@@ -1,19 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "./ERC20AirDropErrors.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20AirDropMismatch} from "./ERC20AirDropErrors.sol";
 
 /// @title Air drop support for ERC20 tokens, using minting.
 /// @author BillSchumacher
 /// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
 abstract contract ERC20AirDropMint is ERC20 {
+    /// @notice Emitted when tokens are airdropped to an address.
+    /// @dev Emitted when tokens are airdropped to an address.
+    /// @param to (address) - the address the tokens are airdropped to.
+    /// @param value (uint256) - the value of the airdrop.
     event AirDropMint(address indexed to, uint256 value);
 
     function beforeAirDropMint(
         address account,
         uint256 value
     ) internal virtual {}
+
     function afterAirDropMint(
         address account,
         uint256 value

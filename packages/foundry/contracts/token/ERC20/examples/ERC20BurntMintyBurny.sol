@@ -1,13 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import "../extensions/ERC20MintRegistry.sol";
-import "../extensions/ERC20BurnRegistry.sol";
-import "../extensions/ERC20ProofOfBurn.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
-import "../extensions/ERC20ProofOfBurner.sol";
-import "../extensions/ERC20ProofOfMint.sol";
-import "../extensions/ERC20ProofOfMinter.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20MintRegistry} from "../extensions/ERC20MintRegistry.sol";
+import {ERC20BurnRegistry} from "../extensions/ERC20BurnRegistry.sol";
+import {ERC20ProofOfBurn} from "../extensions/ERC20ProofOfBurn.sol";
+import {ERC20Capped} from
+    "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
+import {ERC20ProofOfBurner} from "../extensions/ERC20ProofOfBurner.sol";
+import {ERC20ProofOfMint} from "../extensions/ERC20ProofOfMint.sol";
+import {ERC20ProofOfMinter} from "../extensions/ERC20ProofOfMinter.sol";
+import {IERC20CustomErrors} from "../extensions/IERC20CustomErrors.sol";
 
 /// @title Example implementation contract for extensions.
 /// @author BillSchumacher
@@ -36,6 +39,7 @@ contract ERC20BurntMintyBurny is
         burn(500000 * 10 ** decimals());
     }
 
+    /// @inheritdoc ERC20ProofOfBurn
     function mintRatio()
         public
         pure
@@ -55,6 +59,7 @@ contract ERC20BurntMintyBurny is
         return 5000;
     }
 
+    /// @inheritdoc ERC20
     function balanceOf(address account)
         public
         view
@@ -65,6 +70,7 @@ contract ERC20BurntMintyBurny is
         return ERC20BurnRegistry.balanceOf(account);
     }
 
+    /// @inheritdoc ERC20
     function _update(
         address from,
         address to,
@@ -82,4 +88,13 @@ contract ERC20BurntMintyBurny is
 
     /// @notice Allows the token to receive ether.
     receive() external payable {}
+
+    /// @notice Allows the token to withdraw ether.
+    /// @dev Allows the token to withdraw ether.
+    function withdraw() public virtual {
+        address to = msg.sender;
+        uint256 value = address(this).balance;
+        (bool success,) = to.call{value: value}("");
+        if (!success) revert IERC20CustomErrors.ERC20TransferFailed(to, value);
+    }
 }

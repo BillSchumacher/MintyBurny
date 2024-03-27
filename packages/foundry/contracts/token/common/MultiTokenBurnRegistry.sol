@@ -4,7 +4,7 @@ pragma solidity 0.8.25;
 /// @title Burn registry supporting multiple token contract addresses.
 /// @author BillSchumacher
 /// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
-contract MultiTokenBurnRegistry {
+abstract contract MultiTokenBurnRegistry {
     struct TokenBurnStats {
         uint256 totalBurned;
         uint256 totalBurners;
@@ -116,7 +116,7 @@ contract MultiTokenBurnRegistry {
     function updateBurnRegistry(
         address account,
         uint256 value
-    ) public payable {
+    ) public payable virtual {
         address sender = msg.sender;
         TokenBurnStats storage stats = _burnStats[sender];
         stats.totalBurned += value;

@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
-import "forge-std/Test.sol";
-import "../contracts/token/FreshBurnTokens.sol";
-import "../contracts/token/FreshBurnToken.sol";
+import {Test} from "forge-std/Test.sol";
+import {FreshBurnTokens} from "../contracts/token/FreshBurnTokens.sol";
+import {FreshBurnToken} from "../contracts/token/FreshBurnToken.sol";
+import {IERC20CustomErrors} from
+    "../contracts/token/ERC20/extensions/IERC20CustomErrors.sol";
 
 contract TestMultiMintBurnTest is Test {
     FreshBurnTokens public freshBurnTokens;
@@ -14,6 +16,24 @@ contract TestMultiMintBurnTest is Test {
         freshBurnTokens = new FreshBurnTokens();
         freshBurnToken = new FreshBurnToken(address(freshBurnTokens));
         freshBurnTokenAddress = address(freshBurnToken);
+    }
+
+    function testWithdraw() public {
+        vm.deal(address(vm.addr(1)), 100000 * 10 ** 18);
+        vm.deal(address(freshBurnTokens), 100000 * 10 ** 18);
+        vm.startPrank(vm.addr(1));
+        freshBurnTokens.withdraw();
+        assertTrue(address(freshBurnTokens).balance == 0);
+        vm.stopPrank();
+        vm.deal(address(freshBurnTokens), 100000 * 10 ** 18);
+        try freshBurnTokens.withdraw() {
+            assertTrue(false, "withdraw() should revert when invalid.");
+        } catch (bytes memory reason) {
+            bytes4 expectedSelector =
+                IERC20CustomErrors.ERC20TransferFailed.selector;
+            bytes4 receivedSelector = bytes4(reason);
+            assertEq(expectedSelector, receivedSelector);
+        }
     }
 
     function testRegistryMintAndBurn() public {

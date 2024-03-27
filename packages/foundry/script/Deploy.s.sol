@@ -1,8 +1,10 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity 0.8.25;
 
-import "../contracts/token/ERC20/examples/ERC20MintyBurny.sol";
-import "../contracts/token/ERC20/examples/ERC20BurntMintyBurny.sol";
+import {ERC20MintyBurny} from
+    "../contracts/token/ERC20/examples/ERC20MintyBurny.sol";
+import {ERC20BurntMintyBurny} from
+    "../contracts/token/ERC20/examples/ERC20BurntMintyBurny.sol";
 import "./DeployHelpers.s.sol";
 
 contract DeployScript is ScaffoldETHDeploy {

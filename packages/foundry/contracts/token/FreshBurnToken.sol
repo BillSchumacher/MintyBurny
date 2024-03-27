@@ -29,19 +29,31 @@ contract FreshBurnToken is ERC20 {
         }
     }
 
+    /// @notice Mint tokens to the sender.
+    /// @dev Mint tokens to the sender.
+    /// @param value (uint256) - the amount of tokens to mint.
     function mint(uint256 value) public {
         _mint(msg.sender, value);
     }
 
+    /// @notice Burn tokens from the sender.
+    /// @dev Burn tokens from the sender.
+    /// @param value (uint256) - the amount of tokens to burn.
     function burn(uint256 value) public {
         _burn(msg.sender, value);
     }
 
+    /// @dev Update the burn registry.
+    /// @param account (address) - the address of the account.
+    /// @param value (uint256) - the amount of tokens to burn.
     function _updateBurnRegistry(address account, uint256 value) external {
         //_burnRegistry.call(abi.encodeWithSignature("updateBurnRegistry(address,uint256)", account, value));
         MultiTokenBurnRegistry(_registry).updateBurnRegistry(account, value);
     }
 
+    /// @dev Update the mint registry.
+    /// @param account (address) - the address of the account.
+    /// @param value (uint256) - the amount of tokens to mint.
     function _updateMintRegistry(address account, uint256 value) external {
         //_burnRegistry.call(abi.encodeWithSignature("updateMintRegistry(address,uint256)", account, value));
         MultiTokenMintRegistry(_registry).updateMintRegistry(account, value);

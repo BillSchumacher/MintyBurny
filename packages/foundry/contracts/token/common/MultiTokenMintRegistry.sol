@@ -4,7 +4,7 @@ pragma solidity 0.8.25;
 /// @title Mint registry supporting multiple token contract addresses.
 /// @author BillSchumacher
 /// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
-contract MultiTokenMintRegistry {
+abstract contract MultiTokenMintRegistry {
     struct TokenMintStats {
         uint256 totalMinted;
         uint256 totalMinters;

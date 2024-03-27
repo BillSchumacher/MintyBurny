@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity 0.8.25;
 
-import "forge-std/Test.sol";
-import "../contracts/token/ERC20/examples/ERC20MintyBurny.sol";
+import {Test} from "forge-std/Test.sol";
+import {ERC20MintyBurny} from
+    "../contracts/token/ERC20/examples/ERC20MintyBurny.sol";
+import {ERC20Capped} from
+    "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 
 contract MintyBurnyTest is Test {
     ERC20MintyBurny public mintyBurny;

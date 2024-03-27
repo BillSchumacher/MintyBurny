@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20Burnable} from
+    "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import {TokenBurnRegistry} from "../../common/TokenBurnRegistry.sol";
 
 /// @title A smart contract that allows burning tokens and tracking the burned tokens.

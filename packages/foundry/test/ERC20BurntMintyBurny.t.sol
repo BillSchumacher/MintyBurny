@@ -1,10 +1,17 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity 0.8.25;
 
-import "forge-std/Test.sol";
-import "../contracts/token/ERC20/examples/ERC20MintyBurny.sol";
-import "../contracts/token/ERC20/examples/ERC20BurntMintyBurny.sol";
-import "../contracts/token/ERC20/extensions/ERC20MintyBurnyErrors.sol";
+import {Test} from "forge-std/Test.sol";
+import {ERC20MintyBurny} from
+    "../contracts/token/ERC20/examples/ERC20MintyBurny.sol";
+import {ERC20BurntMintyBurny} from
+    "../contracts/token/ERC20/examples/ERC20BurntMintyBurny.sol";
+import {NoTokensToMint} from
+    "../contracts/token/ERC20/extensions/ERC20MintyBurnyErrors.sol";
+import {IERC20CustomErrors} from
+    "../contracts/token/ERC20/extensions/IERC20CustomErrors.sol";
+import {ERC20Capped} from
+    "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 
 contract BurntMintyBurnyTest is Test {
     ERC20MintyBurny public mintyBurny;
@@ -18,6 +25,28 @@ contract BurntMintyBurnyTest is Test {
         contractAddresses[0] = address(mintyBurny);
         burntMintyBurny =
             new ERC20BurntMintyBurny(burnAddresses, contractAddresses);
+    }
+
+    function testWithdraw() public {
+        vm.deal(address(vm.addr(1)), 100000 * 10 ** 18);
+        vm.deal(address(burntMintyBurny), 100000 * 10 ** 18);
+        vm.deal(address(mintyBurny), 100000 * 10 ** 18);
+        vm.startPrank(vm.addr(1));
+        burntMintyBurny.withdraw();
+        assertTrue(address(burntMintyBurny).balance == 0);
+        mintyBurny.withdraw();
+        assertTrue(address(mintyBurny).balance == 0);
+        vm.stopPrank();
+        vm.deal(address(burntMintyBurny), 100000 * 10 ** 18);
+        vm.deal(address(mintyBurny), 100000 * 10 ** 18);
+        try burntMintyBurny.withdraw() {
+            assertTrue(false, "withdraw() should revert when invalid.");
+        } catch (bytes memory reason) {
+            bytes4 expectedSelector =
+                IERC20CustomErrors.ERC20TransferFailed.selector;
+            bytes4 receivedSelector = bytes4(reason);
+            assertEq(expectedSelector, receivedSelector);
+        }
     }
 
     function testMintBurnt() public {

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/utils/Context.sol";
-import "./ERC20MintyBurnyErrors.sol";
-import "./ERC20MintRegistry.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {Context} from "@openzeppelin/contracts/utils/Context.sol";
+import {NoTokensToMint} from "./ERC20MintyBurnyErrors.sol";
+import {ERC20MintRegistry} from "./ERC20MintRegistry.sol";
 
 /// @title A smart contract that checks for minted tokens and mints new tokens based on the minted tokens.
 /// @custom:requires minterContracts to implement ERC20MintRegistry
