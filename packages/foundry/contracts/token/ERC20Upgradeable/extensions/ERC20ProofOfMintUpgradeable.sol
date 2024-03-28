@@ -78,10 +78,13 @@ abstract contract ERC20ProofOfMintUpgradeable is
         ERC20ProofOfMintStorage storage $ = _getERC20ProofOfMintStorage();
         address[] memory eligibleMintContracts = $._mintContracts;
         uint256 contractLength = eligibleMintContracts.length;
-        for (uint256 i; i < contractLength; ++i) {
+        for (uint256 i; i < contractLength;) {
             ERC20Upgradeable tokenContract =
                 ERC20Upgradeable(eligibleMintContracts[i]);
             balance += tokenContract.totalSupply();
+            unchecked {
+                ++i;
+            }
         }
         return balance;
     }

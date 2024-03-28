@@ -40,9 +40,12 @@ abstract contract ERC20ProofOfMint is Context, ERC20 {
     {
         address[] memory eligibleMintContracts = _mintContracts;
         uint256 contractLength = _mintContracts.length;
-        for (uint256 i; i < contractLength; ++i) {
+        for (uint256 i; i < contractLength;) {
             ERC20 tokenContract = ERC20(eligibleMintContracts[i]);
             balance += tokenContract.totalSupply();
+            unchecked {
+                ++i;
+            }
         }
         return balance;
     }

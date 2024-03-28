@@ -41,8 +41,11 @@ contract TokenBurnRegistry {
         address[] memory burners = new address[](amount);
         mapping(uint256 => address) storage burnAddresses = _burnAddresses;
 
-        for (uint256 i = 0; i < amount; ++i) {
+        for (uint256 i; i < amount;) {
             burners[i] = burnAddresses[i];
+            unchecked {
+                ++i;
+            }
         }
         return burners;
     }
@@ -63,8 +66,11 @@ contract TokenBurnRegistry {
         address[] memory burners = new address[](amount);
         mapping(uint256 => address) storage burnAddresses = _burnAddresses;
 
-        for (uint256 i = 0; i < amount; ++i) {
+        for (uint256 i; i < amount;) {
             burners[i] = burnAddresses[burnersLength - amount + i];
+            unchecked {
+                ++i;
+            }
         }
         return burners;
     }

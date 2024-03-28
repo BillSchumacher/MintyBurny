@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     ERC20MintyBurny: {
-      address: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
       abi: [
         {
           type: "constructor",
@@ -496,6 +496,13 @@ const deployedContracts = {
           stateMutability: "nonpayable",
         },
         {
+          type: "function",
+          name: "withdraw",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
           type: "event",
           name: "Approval",
           inputs: [
@@ -658,12 +665,32 @@ const deployedContracts = {
             },
           ],
         },
+        {
+          type: "error",
+          name: "ERC20TransferFailed",
+          inputs: [
+            {
+              name: "to",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "balance",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
       ],
       inheritedFunctions: {
-        allowance: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        approve: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        decimals: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        allowance:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        approve:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        balanceOf:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        decimals:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         firstMinters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
         lastMinters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
         mint: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
@@ -671,13 +698,17 @@ const deployedContracts = {
         mintedBy: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
         minter: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
         minters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
-        name: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        symbol: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        name: "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        symbol:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         totalMinted: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
         totalMinters: "contracts/token/ERC20/extensions/ERC20MintRegistry.sol",
-        totalSupply: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        transfer: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        totalSupply:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        transfer:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        transferFrom:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         burn: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
         burnFrom: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
         burnedFrom: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
@@ -687,11 +718,11 @@ const deployedContracts = {
         lastBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
         totalBurned: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
         totalBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
-        cap: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        cap: "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
       },
     },
     ERC20BurntMintyBurny: {
-      address: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      address: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
       abi: [
         {
           type: "constructor",
@@ -1488,6 +1519,13 @@ const deployedContracts = {
           stateMutability: "nonpayable",
         },
         {
+          type: "function",
+          name: "withdraw",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
           type: "event",
           name: "Approval",
           inputs: [
@@ -1652,26 +1690,50 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "ERC20TransferFailed",
+          inputs: [
+            {
+              name: "to",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "balance",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+        {
+          type: "error",
           name: "NoTokensToMint",
           inputs: [],
         },
       ],
       inheritedFunctions: {
-        allowance: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        approve: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        allowance:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        approve:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        balanceOf:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         burnMintRatio: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
-        decimals: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        decimals:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         getCurrentBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
         lastBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
         mintBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
         mintBurnedFor: "contracts/token/ERC20/extensions/ERC20ProofOfBurn.sol",
         mintRatio: "contracts/token/ERC20/extensions/ERC20ProofOfMinter.sol",
-        name: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        symbol: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        totalSupply: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        transfer: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
-        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        name: "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        symbol:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        totalSupply:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        transfer:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        transferFrom:
+          "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
         getCurrentBurnerBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurner.sol",
         lastBurnerBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurner.sol",
         mintBurnerBurned: "contracts/token/ERC20/extensions/ERC20ProofOfBurner.sol",
@@ -1705,7 +1767,7 @@ const deployedContracts = {
         lastBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
         totalBurned: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
         totalBurners: "contracts/token/ERC20/extensions/ERC20BurnRegistry.sol",
-        cap: "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
+        cap: "lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Capped.sol",
       },
     },
   },

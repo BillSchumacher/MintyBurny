@@ -43,10 +43,13 @@ abstract contract ERC20ProofOfMinter is Context, ERC20 {
         address[] memory eligibleMinterContracts = _minterContracts;
         uint256 contractLength = eligibleMinterContracts.length;
         address sender = _msgSender();
-        for (uint256 i; i < contractLength; ++i) {
+        for (uint256 i; i < contractLength;) {
             ERC20MintRegistry tokenContract =
                 ERC20MintRegistry(eligibleMinterContracts[i]);
             balance += tokenContract.mintedBy(sender);
+            unchecked {
+                ++i;
+            }
         }
         return balance;
     }

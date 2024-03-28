@@ -31,10 +31,13 @@ abstract contract ERC20AirDropTransfer is ERC20 {
         beforeAirDropTransfer();
         uint256 len = addresses.length;
         address sender = msg.sender;
-        for (uint256 i; i < len; ++i) {
+        for (uint256 i; i < len;) {
             address addr = addresses[i];
             _transfer(sender, addr, value);
             emit AirDropTransfer(sender, addr, value);
+            unchecked {
+                ++i;
+            }
         }
         afterAirDropTransfer();
     }
@@ -51,10 +54,13 @@ abstract contract ERC20AirDropTransfer is ERC20 {
         uint256 len = addresses.length;
         address sender = msg.sender;
         uint256 splitValue = value / len;
-        for (uint256 i; i < len; ++i) {
+        for (uint256 i; i < len;) {
             address addr = addresses[i];
             _transfer(sender, addr, splitValue);
             emit AirDropTransfer(sender, addr, splitValue);
+            unchecked {
+                ++i;
+            }
         }
         afterAirDropTransfer();
     }
@@ -74,11 +80,14 @@ abstract contract ERC20AirDropTransfer is ERC20 {
         }
         address sender = msg.sender;
         beforeAirDropTransfer();
-        for (uint256 i; i < len; ++i) {
+        for (uint256 i; i < len;) {
             address addr = addresses[i];
             uint256 value = values[i];
             _transfer(sender, addr, value);
             emit AirDropTransfer(sender, addr, value);
+            unchecked {
+                ++i;
+            }
         }
         afterAirDropTransfer();
     }

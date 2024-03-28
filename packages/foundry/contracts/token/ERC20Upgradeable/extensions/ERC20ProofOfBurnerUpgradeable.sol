@@ -81,10 +81,13 @@ abstract contract ERC20ProofOfBurnerUpgradeable is
         address[] memory eligibleBurnerContracts = $._burnerContracts;
         uint256 contractLength = eligibleBurnerContracts.length;
         address sender = _msgSender();
-        for (uint256 i; i < contractLength; ++i) {
+        for (uint256 i; i < contractLength;) {
             ERC20BurnRegistryUpgradeable tokenContract =
                 ERC20BurnRegistryUpgradeable(eligibleBurnerContracts[i]);
             balance += tokenContract.burnedFrom(sender);
+            unchecked {
+                ++i;
+            }
         }
         return balance;
     }

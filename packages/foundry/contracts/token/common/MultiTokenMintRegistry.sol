@@ -44,8 +44,11 @@ abstract contract MultiTokenMintRegistry is IMultiTokenMintRegistry {
         address[] memory result = new address[](amount);
         mapping(uint256 => address) storage mintAddresses = stats.mintAddresses;
 
-        for (uint256 i; i < amount; ++i) {
+        for (uint256 i; i < amount;) {
             result[i] = mintAddresses[i];
+            unchecked {
+                ++i;
+            }
         }
         return result;
     }
@@ -66,8 +69,11 @@ abstract contract MultiTokenMintRegistry is IMultiTokenMintRegistry {
         address[] memory results = new address[](amount);
         mapping(uint256 => address) storage mintAddresses = stats.mintAddresses;
 
-        for (uint256 i; i < amount; ++i) {
+        for (uint256 i; i < amount;) {
             results[i] = mintAddresses[allMinters - amount + i];
+            unchecked {
+                ++i;
+            }
         }
         return results;
     }

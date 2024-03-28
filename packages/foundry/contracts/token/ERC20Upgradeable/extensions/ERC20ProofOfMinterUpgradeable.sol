@@ -80,10 +80,13 @@ abstract contract ERC20ProofOfMinterUpgradeable is
         address[] memory eligibleMinterContracts = $._minterContracts;
         uint256 contractLength = eligibleMinterContracts.length;
         address sender = _msgSender();
-        for (uint256 i; i < contractLength; ++i) {
+        for (uint256 i; i < contractLength;) {
             ERC20MintRegistryUpgradeable tokenContract =
                 ERC20MintRegistryUpgradeable(eligibleMinterContracts[i]);
             balance += tokenContract.mintedBy(sender);
+            unchecked {
+                ++i;
+            }
         }
         return balance;
     }

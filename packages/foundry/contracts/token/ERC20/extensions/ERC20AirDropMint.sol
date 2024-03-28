@@ -33,12 +33,15 @@ abstract contract ERC20AirDropMint is ERC20 {
         uint256 value
     ) public virtual {
         uint256 len = addresses.length;
-        for (uint256 i; i < len; ++i) {
+        for (uint256 i; i < len;) {
             address to = addresses[i];
             beforeAirDropMint(to, value);
             _mint(to, value);
             emit AirDropMint(to, value);
             afterAirDropMint(to, value);
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -52,12 +55,15 @@ abstract contract ERC20AirDropMint is ERC20 {
     ) public virtual {
         uint256 len = addresses.length;
         uint256 splitValue = value / len;
-        for (uint256 i; i < len; ++i) {
+        for (uint256 i; i < len;) {
             address to = addresses[i];
             beforeAirDropMint(to, splitValue);
             _mint(to, splitValue);
             emit AirDropMint(to, splitValue);
             afterAirDropMint(to, splitValue);
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -74,7 +80,7 @@ abstract contract ERC20AirDropMint is ERC20 {
         if (len != valLen) {
             revert ERC20AirDropMismatch(len, valLen);
         }
-        for (uint256 i; i < len; ++i) {
+        for (uint256 i; i < len;) {
             address to = addresses[i];
             uint256 value = values[i];
 
@@ -82,6 +88,9 @@ abstract contract ERC20AirDropMint is ERC20 {
             _mint(to, value);
             afterAirDropMint(to, value);
             emit AirDropMint(to, value);
+            unchecked {
+                ++i;
+            }
         }
     }
 }

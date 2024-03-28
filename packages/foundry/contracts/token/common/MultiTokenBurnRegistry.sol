@@ -48,8 +48,11 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
         address[] memory burners = new address[](amount);
         mapping(uint256 => address) storage burnAddresses = stats.burnAddresses;
 
-        for (uint256 i = 0; i < amount; ++i) {
+        for (uint256 i; i < amount;) {
             burners[i] = burnAddresses[i];
+            unchecked {
+                ++i;
+            }
         }
         return burners;
     }
@@ -72,8 +75,11 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
         address[] memory burners = new address[](amount);
         mapping(uint256 => address) storage burnAddresses = stats.burnAddresses;
 
-        for (uint256 i = 0; i < amount; ++i) {
+        for (uint256 i; i < amount;) {
             burners[i] = burnAddresses[burnersLength - amount + i];
+            unchecked {
+                ++i;
+            }
         }
         return burners;
     }
