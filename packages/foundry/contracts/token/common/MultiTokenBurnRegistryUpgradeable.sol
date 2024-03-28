@@ -1,21 +1,57 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {IMultiTokenBurnRegistry} from "./IMultiTokenBurnRegistry.sol";
+import {ContextUpgradeable} from
+    "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
 /// @title Burn registry supporting multiple token contract addresses.
 /// @author BillSchumacher
 /// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
-abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
-    mapping(address token => IMultiTokenBurnRegistry.TokenBurnStats stats)
-        private _burnStats;
+abstract contract MultiTokenBurnRegistryUpgradeable is
+    Initializable,
+    IMultiTokenBurnRegistry,
+    ContextUpgradeable
+{
+    /// @custom:storage-location erc7201:MintyBurny.storage.MultiTokenBurnRegistry
+    struct MultiTokenBurnRegistryStorage {
+        mapping(address => IMultiTokenBurnRegistry.TokenBurnStats) _burnStats;
+    }
+
+    // keccak256(abi.encode(uint256(keccak256("MintyBurny.storage.MultiTokenBurnRegistry")) - 1)) & ~bytes32(uint256(0xff))
+    bytes32 private constant MultiTokenBurnRegistryStorageLocation =
+        0x8d7dd2605cd348455246d20287b62394203b2c84a04b5d85f103846a6bc7ee00;
+
+    function _getMultiTokenBurnRegistryStorage()
+        private
+        pure
+        returns (MultiTokenBurnRegistryStorage storage $)
+    {
+        assembly {
+            $.slot := MultiTokenBurnRegistryStorageLocation
+        }
+    }
+
+    function __MultiTokenBurnRegistry_init() public virtual onlyInitializing {
+        __MultiTokenBurnRegistry_init_unchained();
+    }
+
+    function __MultiTokenBurnRegistry_init_unchained()
+        internal
+        onlyInitializing
+    {
+        // MultiTokenBurnRegistryStorage storage $ = _getMultiTokenBurnRegistryStorage();
+    }
 
     /// @notice Get the total amount of burners.
     /// @dev Returns the total amount of burners.
     /// @param token (address) - the address of the token.
     /// @return (uint256) - the total amount of burners.
     function totalBurners(address token) public view returns (uint256) {
-        return _burnStats[token].totalBurners;
+        MultiTokenBurnRegistryStorage storage $ =
+            _getMultiTokenBurnRegistryStorage();
+        return $._burnStats[token].totalBurners;
     }
 
     /// @notice Get the address of the burner at the given index.
@@ -27,7 +63,9 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
         address token,
         uint256 index
     ) public view returns (address) {
-        return _burnStats[token].burnAddresses[index];
+        MultiTokenBurnRegistryStorage storage $ =
+            _getMultiTokenBurnRegistryStorage();
+        return $._burnStats[token].burnAddresses[index];
     }
 
     /// @notice Get the addresses of the first `amount` burners.
@@ -39,7 +77,9 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
         address token,
         uint256 amount
     ) public view returns (address[] memory) {
-        TokenBurnStats storage stats = _burnStats[token];
+        MultiTokenBurnRegistryStorage storage $ =
+            _getMultiTokenBurnRegistryStorage();
+        TokenBurnStats storage stats = $._burnStats[token];
         uint256 burnersLength = stats.totalBurners;
         if (burnersLength < amount) {
             amount = burnersLength;
@@ -63,7 +103,9 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
         address token,
         uint256 amount
     ) public view returns (address[] memory) {
-        TokenBurnStats storage stats = _burnStats[token];
+        MultiTokenBurnRegistryStorage storage $ =
+            _getMultiTokenBurnRegistryStorage();
+        TokenBurnStats storage stats = $._burnStats[token];
         uint256 burnersLength = stats.totalBurners;
         if (burnersLength < amount) {
             amount = burnersLength;
@@ -87,7 +129,9 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
         address token,
         address account
     ) public view returns (uint256) {
-        return _burnStats[token].burned[account];
+        MultiTokenBurnRegistryStorage storage $ =
+            _getMultiTokenBurnRegistryStorage();
+        return $._burnStats[token].burned[account];
     }
 
     /// @notice Get the total amount of burners.
@@ -95,7 +139,9 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     /// @param token (address) - the address of the token.
     /// @return (uint256) - the total amount of burners.
     function burns(address token) public view returns (uint256) {
-        return _burnStats[token].totalBurners;
+        MultiTokenBurnRegistryStorage storage $ =
+            _getMultiTokenBurnRegistryStorage();
+        return $._burnStats[token].totalBurners;
     }
 
     /// @notice Get the total amount of tokens burned.
@@ -103,7 +149,9 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     /// @param token (address) - the address of the token.
     /// @return (uint256) - the total amount of tokens burned.
     function totalBurned(address token) public view returns (uint256) {
-        return _burnStats[token].totalBurned;
+        MultiTokenBurnRegistryStorage storage $ =
+            _getMultiTokenBurnRegistryStorage();
+        return $._burnStats[token].totalBurned;
     }
 
     /// @dev Update the burn registry, uses the sender as the token address.
@@ -113,8 +161,10 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
         address account,
         uint256 value
     ) public payable virtual {
-        address sender = msg.sender;
-        TokenBurnStats storage stats = _burnStats[sender];
+        MultiTokenBurnRegistryStorage storage $ =
+            _getMultiTokenBurnRegistryStorage();
+        address sender = _msgSender();
+        TokenBurnStats storage stats = $._burnStats[sender];
         stats.totalBurned += value;
         stats.burned[account] += value;
         stats.burnAddresses[stats.totalBurners] = account;
