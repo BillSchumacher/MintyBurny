@@ -51,7 +51,7 @@ abstract contract MultiTokenMintRegistryUpgradeable is
     function minter(
         address token,
         uint256 index
-    ) public view returns (address) {
+    ) external view returns (address) {
         MultiTokenMintRegistryStorage storage $ =
             _getMultiTokenMintRegistryStorage();
         return $._mintStats[token].mintAddresses[index];
@@ -60,7 +60,7 @@ abstract contract MultiTokenMintRegistryUpgradeable is
     /// @notice Get the total amount of minters.
     /// @dev Returns the total amount of minters.
     /// @return (uint256) - the total amount of minters.
-    function totalMinters(address token) public view returns (uint256) {
+    function totalMinters(address token) external view returns (uint256) {
         MultiTokenMintRegistryStorage storage $ =
             _getMultiTokenMintRegistryStorage();
         return $._mintStats[token].totalMinters;
@@ -73,7 +73,7 @@ abstract contract MultiTokenMintRegistryUpgradeable is
     function firstMinters(
         address token,
         uint256 amount
-    ) public view returns (address[] memory) {
+    ) external view returns (address[] memory) {
         MultiTokenMintRegistryStorage storage $ =
             _getMultiTokenMintRegistryStorage();
         TokenMintStats storage stats = $._mintStats[token];
@@ -100,7 +100,7 @@ abstract contract MultiTokenMintRegistryUpgradeable is
     function lastMinters(
         address token,
         uint256 amount
-    ) public view returns (address[] memory) {
+    ) external view returns (address[] memory) {
         MultiTokenMintRegistryStorage storage $ =
             _getMultiTokenMintRegistryStorage();
         TokenMintStats storage stats = $._mintStats[token];
@@ -127,7 +127,7 @@ abstract contract MultiTokenMintRegistryUpgradeable is
     function mintedBy(
         address token,
         address account
-    ) public view returns (uint256) {
+    ) external view returns (uint256) {
         MultiTokenMintRegistryStorage storage $ =
             _getMultiTokenMintRegistryStorage();
         return $._mintStats[token].minted[account];
@@ -136,7 +136,7 @@ abstract contract MultiTokenMintRegistryUpgradeable is
     /// @notice Get the total amount of tokens minted.
     /// @dev Returns the total amount of tokens minted.
     /// @return (uint256) - the total amount of tokens minted.
-    function totalMinted(address token) public view returns (uint256) {
+    function totalMinted(address token) external view returns (uint256) {
         MultiTokenMintRegistryStorage storage $ =
             _getMultiTokenMintRegistryStorage();
         return $._mintStats[token].totalMinted;
@@ -148,15 +148,20 @@ abstract contract MultiTokenMintRegistryUpgradeable is
     function updateMintRegistry(
         address account,
         uint256 value
-    ) public payable virtual {
+    ) external payable virtual {
         MultiTokenMintRegistryStorage storage $ =
             _getMultiTokenMintRegistryStorage();
         address sender = _msgSender();
         TokenMintStats storage stats = $._mintStats[sender];
         stats.totalMinted += value;
-        stats.minted[account] += value;
-        uint256 tokenMinters = stats.totalMinters;
-        stats.mintAddresses[tokenMinters] = account;
-        stats.totalMinters = tokenMinters + 1;
+        unchecked {
+            stats.minted[account] += value;
+            uint256 tokenMinters = stats.totalMinters;
+            stats.mintAddresses[tokenMinters] = account;
+            stats.totalMinters = tokenMinters + 1;
+        }
+        emit TokenMinted(
+            sender, account, value, stats.totalMinted, stats.totalMinters
+        );
     }
 }

@@ -48,7 +48,7 @@ abstract contract MultiTokenBurnRegistryUpgradeable is
     /// @dev Returns the total amount of burners.
     /// @param token (address) - the address of the token.
     /// @return (uint256) - the total amount of burners.
-    function totalBurners(address token) public view returns (uint256) {
+    function totalBurners(address token) external view returns (uint256) {
         MultiTokenBurnRegistryStorage storage $ =
             _getMultiTokenBurnRegistryStorage();
         return $._burnStats[token].totalBurners;
@@ -62,7 +62,7 @@ abstract contract MultiTokenBurnRegistryUpgradeable is
     function burner(
         address token,
         uint256 index
-    ) public view returns (address) {
+    ) external view returns (address) {
         MultiTokenBurnRegistryStorage storage $ =
             _getMultiTokenBurnRegistryStorage();
         return $._burnStats[token].burnAddresses[index];
@@ -76,7 +76,7 @@ abstract contract MultiTokenBurnRegistryUpgradeable is
     function firstBurners(
         address token,
         uint256 amount
-    ) public view returns (address[] memory) {
+    ) external view returns (address[] memory) {
         MultiTokenBurnRegistryStorage storage $ =
             _getMultiTokenBurnRegistryStorage();
         TokenBurnStats storage stats = $._burnStats[token];
@@ -105,7 +105,7 @@ abstract contract MultiTokenBurnRegistryUpgradeable is
     function lastBurners(
         address token,
         uint256 amount
-    ) public view returns (address[] memory) {
+    ) external view returns (address[] memory) {
         MultiTokenBurnRegistryStorage storage $ =
             _getMultiTokenBurnRegistryStorage();
         TokenBurnStats storage stats = $._burnStats[token];
@@ -134,7 +134,7 @@ abstract contract MultiTokenBurnRegistryUpgradeable is
     function burnedFrom(
         address token,
         address account
-    ) public view returns (uint256) {
+    ) external view returns (uint256) {
         MultiTokenBurnRegistryStorage storage $ =
             _getMultiTokenBurnRegistryStorage();
         return $._burnStats[token].burned[account];
@@ -144,7 +144,7 @@ abstract contract MultiTokenBurnRegistryUpgradeable is
     /// @dev Returns the total amount of burners.
     /// @param token (address) - the address of the token.
     /// @return (uint256) - the total amount of burners.
-    function burns(address token) public view returns (uint256) {
+    function burns(address token) external view returns (uint256) {
         MultiTokenBurnRegistryStorage storage $ =
             _getMultiTokenBurnRegistryStorage();
         return $._burnStats[token].totalBurners;
@@ -154,7 +154,7 @@ abstract contract MultiTokenBurnRegistryUpgradeable is
     /// @dev Returns the total amount of tokens burned.
     /// @param token (address) - the address of the token.
     /// @return (uint256) - the total amount of tokens burned.
-    function totalBurned(address token) public view returns (uint256) {
+    function totalBurned(address token) external view returns (uint256) {
         MultiTokenBurnRegistryStorage storage $ =
             _getMultiTokenBurnRegistryStorage();
         return $._burnStats[token].totalBurned;
@@ -166,14 +166,19 @@ abstract contract MultiTokenBurnRegistryUpgradeable is
     function updateBurnRegistry(
         address account,
         uint256 value
-    ) public payable virtual {
+    ) external payable virtual {
         MultiTokenBurnRegistryStorage storage $ =
             _getMultiTokenBurnRegistryStorage();
         address sender = _msgSender();
         TokenBurnStats storage stats = $._burnStats[sender];
         stats.totalBurned += value;
-        stats.burned[account] += value;
-        stats.burnAddresses[stats.totalBurners] = account;
-        stats.totalBurners = stats.totalBurners + 1;
+        unchecked {
+            stats.burned[account] += value;
+            stats.burnAddresses[stats.totalBurners] = account;
+            stats.totalBurners = stats.totalBurners + 1;
+        }
+        emit TokenBurned(
+            sender, account, value, stats.totalBurned, stats.totalBurners
+        );
     }
 }

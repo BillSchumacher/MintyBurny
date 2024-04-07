@@ -1,20 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
+import "./ITokenBurnRegistryStats.sol";
+
 /// @title Burn registry supporting a ERC20 token.
 /// @author BillSchumacher
 /// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
-contract TokenBurnRegistry {
-    mapping(address => uint256) private _burned;
-    mapping(uint256 => address) private _burnAddresses;
-    uint256 private _totalBurners;
-    uint256 private _totalBurned;
+contract TokenBurnRegistry is ITokenBurnRegistryStats {
+    TokenBurnStats private _burnStats;
 
     /// @notice Get the total amount of burners.
     /// @dev Returns the total amount of burners.
     /// @return (uint256) - the total amount of burners.
     function totalBurners() public view returns (uint256) {
-        return _totalBurners;
+        return _burnStats.totalBurners;
     }
 
     /// @notice Get the address of the burner at the given index.
@@ -22,7 +21,7 @@ contract TokenBurnRegistry {
     /// @param index (uint256) - the index of the burner.
     /// @return (address) - the address of the burner.
     function burner(uint256 index) public view returns (address) {
-        return _burnAddresses[index];
+        return _burnStats.burnAddresses[index];
     }
 
     /// @notice Get the addresses of the first `amount` burners.
@@ -34,12 +33,13 @@ contract TokenBurnRegistry {
         view
         returns (address[] memory)
     {
-        uint256 burnersLength = _totalBurners;
+        TokenBurnStats storage stats = _burnStats;
+        uint256 burnersLength = stats.totalBurners;
         if (burnersLength < amount) {
             amount = burnersLength;
         }
         address[] memory burners = new address[](amount);
-        mapping(uint256 => address) storage burnAddresses = _burnAddresses;
+        mapping(uint256 => address) storage burnAddresses = stats.burnAddresses;
 
         for (uint256 i; i < amount;) {
             burners[i] = burnAddresses[i];
@@ -59,12 +59,13 @@ contract TokenBurnRegistry {
         view
         returns (address[] memory)
     {
-        uint256 burnersLength = _totalBurners;
+        TokenBurnStats storage stats = _burnStats;
+        uint256 burnersLength = stats.totalBurners;
         if (burnersLength < amount) {
             amount = burnersLength;
         }
         address[] memory burners = new address[](amount);
-        mapping(uint256 => address) storage burnAddresses = _burnAddresses;
+        mapping(uint256 => address) storage burnAddresses = stats.burnAddresses;
 
         for (uint256 i; i < amount;) {
             burners[i] = burnAddresses[burnersLength - amount + i];
@@ -80,21 +81,21 @@ contract TokenBurnRegistry {
     /// @param account (address) - the address of the account.
     /// @return (uint256) - the total amount of tokens burned.
     function burnedFrom(address account) public view returns (uint256) {
-        return _burned[account];
+        return _burnStats.burned[account];
     }
 
     /// @notice Get the total amount of burners.
     /// @dev Returns the total amount of burners.
     /// @return (uint256) - the total amount of burners.
     function burns() public view returns (uint256) {
-        return _totalBurners;
+        return _burnStats.totalBurners;
     }
 
     /// @notice Get the total amount of tokens burned.
     /// @dev Returns the total amount of tokens burned.
     /// @return (uint256) - the total amount of tokens burned.
     function totalBurned() public view returns (uint256) {
-        return _totalBurned;
+        return _burnStats.totalBurned;
     }
 
     /// @dev Update the burn registry.
@@ -104,11 +105,13 @@ contract TokenBurnRegistry {
         address account,
         uint256 value
     ) internal virtual {
-        _totalBurned += value;
+        TokenBurnStats storage stats = _burnStats;
+        stats.totalBurned += value;
         unchecked {
-            _burned[account] += value;
-            _burnAddresses[_totalBurners] = account;
-            _totalBurners += 1;
+            stats.burned[account] += value;
+            stats.burnAddresses[stats.totalBurners] = account;
+            stats.totalBurners += 1;
         }
+        emit Burned(account, value, stats.totalBurned, stats.totalBurners);
     }
 }

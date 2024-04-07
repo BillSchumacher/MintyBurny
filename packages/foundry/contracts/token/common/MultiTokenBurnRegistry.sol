@@ -14,7 +14,7 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     /// @dev Returns the total amount of burners.
     /// @param token (address) - the address of the token.
     /// @return (uint256) - the total amount of burners.
-    function totalBurners(address token) public view returns (uint256) {
+    function totalBurners(address token) external view returns (uint256) {
         return _burnStats[token].totalBurners;
     }
 
@@ -26,7 +26,7 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     function burner(
         address token,
         uint256 index
-    ) public view returns (address) {
+    ) external view returns (address) {
         return _burnStats[token].burnAddresses[index];
     }
 
@@ -38,7 +38,7 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     function firstBurners(
         address token,
         uint256 amount
-    ) public view returns (address[] memory) {
+    ) external view returns (address[] memory) {
         TokenBurnStats storage stats = _burnStats[token];
         uint256 burnersLength = stats.totalBurners;
         if (burnersLength < amount) {
@@ -65,7 +65,7 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     function lastBurners(
         address token,
         uint256 amount
-    ) public view returns (address[] memory) {
+    ) external view returns (address[] memory) {
         TokenBurnStats storage stats = _burnStats[token];
         uint256 burnersLength = stats.totalBurners;
         if (burnersLength < amount) {
@@ -92,7 +92,7 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     function burnedFrom(
         address token,
         address account
-    ) public view returns (uint256) {
+    ) external view returns (uint256) {
         return _burnStats[token].burned[account];
     }
 
@@ -100,7 +100,7 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     /// @dev Returns the total amount of burners.
     /// @param token (address) - the address of the token.
     /// @return (uint256) - the total amount of burners.
-    function burns(address token) public view returns (uint256) {
+    function burns(address token) external view returns (uint256) {
         return _burnStats[token].totalBurners;
     }
 
@@ -108,7 +108,7 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     /// @dev Returns the total amount of tokens burned.
     /// @param token (address) - the address of the token.
     /// @return (uint256) - the total amount of tokens burned.
-    function totalBurned(address token) public view returns (uint256) {
+    function totalBurned(address token) external view returns (uint256) {
         return _burnStats[token].totalBurned;
     }
 
@@ -118,12 +118,17 @@ abstract contract MultiTokenBurnRegistry is IMultiTokenBurnRegistry {
     function updateBurnRegistry(
         address account,
         uint256 value
-    ) public payable virtual {
+    ) external payable virtual {
         address sender = msg.sender;
         TokenBurnStats storage stats = _burnStats[sender];
         stats.totalBurned += value;
-        stats.burned[account] += value;
-        stats.burnAddresses[stats.totalBurners] = account;
-        stats.totalBurners = stats.totalBurners + 1;
+        unchecked {
+            stats.burned[account] += value;
+            stats.burnAddresses[stats.totalBurners] = account;
+            stats.totalBurners = stats.totalBurners + 1;
+        }
+        emit TokenBurned(
+            sender, account, value, stats.totalBurned, stats.totalBurners
+        );
     }
 }

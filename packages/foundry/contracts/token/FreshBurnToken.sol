@@ -10,8 +10,11 @@ import {MultiTokenMintRegistry} from "./common/MultiTokenMintRegistry.sol";
 /// @custom:security-contact 34168009+BillSchumacher@users.noreply.github.com
 contract FreshBurnToken is ERC20 {
     address private immutable _registry;
+    uint256 private _zeroAddress;
 
-    constructor(address registry_) ERC20("Struct Fresh Burn Token", "SFBURN") {
+    error Unauthorized(address caller);
+
+    constructor(address registry_) ERC20("Fresh Burn Token", "BURN") {
         _registry = registry_;
     }
 
@@ -22,11 +25,24 @@ contract FreshBurnToken is ERC20 {
     ) internal virtual override(ERC20) {
         ERC20._update(from, to, value);
         if (to == address(0)) {
+            _zeroAddress += value;
             this._updateBurnRegistry(from, value);
         }
         if (from == address(0)) {
             this._updateMintRegistry(to, value);
         }
+    }
+
+    /// @inheritdoc ERC20
+    function balanceOf(address account)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
+        if (account == address(0)) return _zeroAddress;
+        return ERC20.balanceOf(account);
     }
 
     /// @notice Mint tokens to the sender.
@@ -47,6 +63,7 @@ contract FreshBurnToken is ERC20 {
     /// @param account (address) - the address of the account.
     /// @param value (uint256) - the amount of tokens to burn.
     function _updateBurnRegistry(address account, uint256 value) external {
+        if (msg.sender != address(this)) revert Unauthorized(msg.sender);
         //_burnRegistry.call(abi.encodeWithSignature("updateBurnRegistry(address,uint256)", account, value));
         MultiTokenBurnRegistry(_registry).updateBurnRegistry(account, value);
     }
@@ -55,6 +72,7 @@ contract FreshBurnToken is ERC20 {
     /// @param account (address) - the address of the account.
     /// @param value (uint256) - the amount of tokens to mint.
     function _updateMintRegistry(address account, uint256 value) external {
+        if (msg.sender != address(this)) revert Unauthorized(msg.sender);
         //_burnRegistry.call(abi.encodeWithSignature("updateMintRegistry(address,uint256)", account, value));
         MultiTokenMintRegistry(_registry).updateMintRegistry(account, value);
     }

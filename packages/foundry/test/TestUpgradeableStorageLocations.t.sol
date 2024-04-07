@@ -32,6 +32,30 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
+    function testTokenBurnRegistryStorageLocation() public pure {
+        assertEq(
+            keccak256(
+                abi.encode(
+                    uint256(keccak256("MintyBurny.storage.TokenBurnRegistry"))
+                        - 1
+                )
+            ) & ~bytes32(uint256(0xff)),
+            0xd2d50f317175c9d149af9dc7f6f0d0352e430e1514f05259b41c7f5d06582c00
+        );
+    }
+
+    function testTokenMintRegistryStorageLocation() public pure {
+        assertEq(
+            keccak256(
+                abi.encode(
+                    uint256(keccak256("MintyBurny.storage.TokenMintRegistry"))
+                        - 1
+                )
+            ) & ~bytes32(uint256(0xff)),
+            0x7255fcc1aa6745220b10d3ffd1f26d2ae74984d3d917bfd64b0c47c40d351e00
+        );
+    }
+
     function testERC20BurnRegistryStorageLocation() public pure {
         assertEq(
             keccak256(

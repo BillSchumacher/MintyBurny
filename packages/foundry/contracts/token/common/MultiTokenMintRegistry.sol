@@ -17,14 +17,14 @@ abstract contract MultiTokenMintRegistry is IMultiTokenMintRegistry {
     function minter(
         address token,
         uint256 index
-    ) public view returns (address) {
+    ) external view returns (address) {
         return _mintStats[token].mintAddresses[index];
     }
 
     /// @notice Get the total amount of minters.
     /// @dev Returns the total amount of minters.
     /// @return (uint256) - the total amount of minters.
-    function totalMinters(address token) public view returns (uint256) {
+    function totalMinters(address token) external view returns (uint256) {
         return _mintStats[token].totalMinters;
     }
 
@@ -35,7 +35,7 @@ abstract contract MultiTokenMintRegistry is IMultiTokenMintRegistry {
     function firstMinters(
         address token,
         uint256 amount
-    ) public view returns (address[] memory) {
+    ) external view returns (address[] memory) {
         TokenMintStats storage stats = _mintStats[token];
         uint256 allMinters = stats.totalMinters;
         if (allMinters < amount) {
@@ -60,7 +60,7 @@ abstract contract MultiTokenMintRegistry is IMultiTokenMintRegistry {
     function lastMinters(
         address token,
         uint256 amount
-    ) public view returns (address[] memory) {
+    ) external view returns (address[] memory) {
         TokenMintStats storage stats = _mintStats[token];
         uint256 allMinters = stats.totalMinters;
         if (allMinters < amount) {
@@ -85,14 +85,14 @@ abstract contract MultiTokenMintRegistry is IMultiTokenMintRegistry {
     function mintedBy(
         address token,
         address account
-    ) public view returns (uint256) {
+    ) external view returns (uint256) {
         return _mintStats[token].minted[account];
     }
 
     /// @notice Get the total amount of tokens minted.
     /// @dev Returns the total amount of tokens minted.
     /// @return (uint256) - the total amount of tokens minted.
-    function totalMinted(address token) public view returns (uint256) {
+    function totalMinted(address token) external view returns (uint256) {
         return _mintStats[token].totalMinted;
     }
 
@@ -102,13 +102,18 @@ abstract contract MultiTokenMintRegistry is IMultiTokenMintRegistry {
     function updateMintRegistry(
         address account,
         uint256 value
-    ) public payable virtual {
+    ) external payable virtual {
         address sender = msg.sender;
         TokenMintStats storage stats = _mintStats[sender];
         stats.totalMinted += value;
-        stats.minted[account] += value;
-        uint256 tokenMinters = stats.totalMinters;
-        stats.mintAddresses[tokenMinters] = account;
-        stats.totalMinters = tokenMinters + 1;
+        unchecked {
+            stats.minted[account] += value;
+            uint256 tokenMinters = stats.totalMinters;
+            stats.mintAddresses[tokenMinters] = account;
+            stats.totalMinters = tokenMinters + 1;
+        }
+        emit TokenMinted(
+            sender, account, value, stats.totalMinted, stats.totalMinters
+        );
     }
 }
