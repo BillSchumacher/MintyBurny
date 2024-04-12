@@ -213,19 +213,19 @@ contract BurntMintyBurnyTest is Test {
         }
     }
 
-    function testMintRatio() public view {
+    function testMintRatio() public {
         assertTrue(burntMintyBurny.mintRatio() == 5000);
     }
 
-    function testMintMinterRatio() public view {
+    function testMintMinterRatio() public {
         assertTrue(burntMintyBurny.mintMinterRatio() == 5000);
     }
 
-    function testMintBurnerRatio() public view {
+    function testMintBurnerRatio() public {
         assertTrue(burntMintyBurny.mintBurnerRatio() == 5000);
     }
 
-    function testMintBurnRatio() public view {
+    function testMintBurnRatio() public {
         assertTrue(burntMintyBurny.burnMintRatio() == 5000);
     }
 

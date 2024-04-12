@@ -6,7 +6,7 @@ import {Test} from "forge-std/Test.sol";
 contract TestMultiMintBurnUpgradeableTest is Test {
     function setUp() public {}
 
-    function testMultiTokenBurnRegistryStorageLocation() public pure {
+    function testMultiTokenBurnRegistryStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -19,7 +19,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testMultiTokenMintRegistryStorageLocation() public pure {
+    function testMultiTokenMintRegistryStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -32,7 +32,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testTokenBurnRegistryStorageLocation() public pure {
+    function testTokenBurnRegistryStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -44,7 +44,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testTokenMintRegistryStorageLocation() public pure {
+    function testTokenMintRegistryStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -56,7 +56,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testERC20BurnRegistryStorageLocation() public pure {
+    function testERC20BurnRegistryStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -68,7 +68,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testERC20ProofOfBurnStorageLocation() public pure {
+    function testERC20ProofOfBurnStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -80,7 +80,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testERC20ProofOfBurnerStorageLocation() public pure {
+    function testERC20ProofOfBurnerStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -92,7 +92,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testERC20ProofOfMintStorageLocation() public pure {
+    function testERC20ProofOfMintStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -104,7 +104,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testERC20ProofOfMinterStorageLocation() public pure {
+    function testERC20ProofOfMinterStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -116,7 +116,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testERC20BurntMintyBurnyStorageLocation() public pure {
+    function testERC20BurntMintyBurnyStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
@@ -129,7 +129,7 @@ contract TestMultiMintBurnUpgradeableTest is Test {
         );
     }
 
-    function testFreshBurnTokenStorageLocation() public pure {
+    function testFreshBurnTokenStorageLocation() public {
         assertEq(
             keccak256(
                 abi.encode(
