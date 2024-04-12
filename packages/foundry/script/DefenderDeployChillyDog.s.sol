@@ -4,7 +4,7 @@ import {Script} from "forge-std/Script.sol";
 import {console} from "forge-std/console.sol";
 
 import "./DeployHelpers.s.sol";
-import {Defender} from "openzeppelin-foundry-upgrades/Defender.sol";
+import {Defender} from "@openzeppelin/foundry-upgrades/Defender.sol";
 
 contract DefenderScript is ScaffoldETHDeploy {
     function setUp() public {}
