@@ -5,7 +5,7 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Context} from "@openzeppelin/contracts/utils/Context.sol";
 import {NoTokensToMint} from "./ERC20MintyBurnyErrors.sol";
 import {ERC20ExternalMintRegistry} from "./ERC20ExternalMintRegistry.sol";
-import {IMultiTokenMintRegistry} from "./common/IMultiTokenMintRegistry.sol";
+import {IMultiTokenMintRegistry} from "../../common/IMultiTokenMintRegistry.sol";
 
 /// @title A smart contract that checks for minted tokens and mints new tokens based on the minted tokens.
 /// @custom:requires minterContracts to implement ERC20MintRegistry

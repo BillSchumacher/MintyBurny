@@ -5,7 +5,7 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Context} from "@openzeppelin/contracts/utils/Context.sol";
 import {NoTokensToMint} from "./ERC20MintyBurnyErrors.sol";
 import {ERC20ExternalBurnRegistry} from "./ERC20ExternalBurnRegistry.sol";
-import {IMultiTokenBurnRegistry} from "./common/IMultiTokenBurnRegistry.sol";
+import {IMultiTokenBurnRegistry} from "../../common/IMultiTokenBurnRegistry.sol";
 
 /// @title A smart contract that checks for burned tokens and mints new tokens based on the burned tokens.
 /// @custom:requires burnerContracts to implement ERC20BurnRegistry

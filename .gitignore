@@ -15,3 +15,5 @@ node_modules
 .idea
 .vercel
 /packages/foundry/lcov.info
+
+.vercel

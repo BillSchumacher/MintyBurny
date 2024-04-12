@@ -10,7 +10,7 @@ import {Context} from "@openzeppelin/contracts/utils/Context.sol";
 abstract contract ERC20ExternalMintRegistry is Context, ERC20 {
     address internal _mintRegistry;
 
-    constructor(address memory mintRegistry_) {
+    constructor(address mintRegistry_) {
         _mintRegistry = mintRegistry_;
     }
 
