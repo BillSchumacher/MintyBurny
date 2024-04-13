@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { hardhat } from "viem/chains";
 import { CurrencyDollarIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -73,9 +74,15 @@ export const Footer = () => {
             </div>
             <span>·</span>
             <div className="text-center">
-              <a href="https://t.me/NerdsOnline" target="_blank" rel="noreferrer" className="link">
+              <a href="https://t.me/MintyBurny" target="_blank" rel="noreferrer" className="link">
                 Support
               </a>
+            </div>
+          </div>
+          <div className="flex justify-center items-center gap-2 text-sm w-full">
+            <div className="flex justify-center items-center">
+              <Image alt="Uniswap logo" width={32} height={32} src="/uniswap_logo.png" /> is a trademark of Uniswap
+              Labs.
             </div>
           </div>
         </ul>

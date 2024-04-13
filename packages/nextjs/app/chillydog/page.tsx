@@ -91,26 +91,31 @@ const ChillyDog: NextPage = () => {
                     {hotDogTotalSupply && lastMinted ? Number(formatEther(hotDogTotalSupply - lastMinted)) : 0}
                   </div>
 
-                  <div className="flex">
-                    <div className="m-auto">
-                      <button
-                        className="btn btn-secondary btn-lg "
-                        onClick={() => {
-                          setIsMinting(true);
-                          doMint();
-                        }}
-                        disabled={isMinting}
-                      >
-                        <Image
-                          alt="MintyBurny logo"
-                          className="cursor-pointer"
-                          width={42}
-                          height={42}
-                          src="/minty_burny_logo.png"
-                        />
-                        Mint
-                      </button>
-                    </div>
+                  <div className="grid grid-cols-2 gap-5">
+                    <button
+                      className="btn btn-secondary btn-lg "
+                      onClick={() => {
+                        setIsMinting(true);
+                        doMint();
+                      }}
+                      disabled={isMinting}
+                    >
+                      <Image
+                        alt="MintyBurny logo"
+                        className="cursor-pointer"
+                        width={42}
+                        height={42}
+                        src="/minty_burny_logo.png"
+                      />
+                      Mint
+                    </button>
+                    <a
+                      href="https://app.uniswap.org/explore/tokens/ethereum/0xeFfC85182c8fB93526052ce888179CE1A78594c7"
+                      className="btn btn-secondary btn-lg"
+                    >
+                      <Image alt="Uniswap logo" width={42} height={42} src="/uniswap_logo.png" />
+                      Swap
+                    </a>
                   </div>
                   <div>
                     <br />
@@ -161,15 +166,39 @@ const ChillyDog: NextPage = () => {
           </div>
           <div className="flex flex-col items-center pt-4 max-lg:row-start-1">
             <div className="flex-grow bg-base-300 w-full mt-4 px-8 py-12">
+              <h1>
+                <u>About</u>
+              </h1>
               <p>The Chilly Dog (BRRRR) token is targeted at the Hot Dog (HOTDOG) token.</p>
+              <p>When users mint HOTDOG tokens, 50% of the minted amount becomes mintable by the BRRRR token.</p>
               <p>
-                When users mint Hot Dog (HOTDOG) tokens, 50% of the minted amount becomes mintable by the Chilly Dog
-                (BRRRR) token.
+                Anyone can initiate the minting process by calling the mint function on the token&apos;s smart contract.
               </p>
               <p>
-                Anyone can initiate the minting process by calling the mint function on the Chilly Dog (BRRRR)
-                token&apos;s smart contract.
+                There is a hard cap of 50% of the total supply of Hot Dog (HOTDOG) tokens that can be minted by the
+                Chilly Dog.
               </p>
+              <p>
+                Hot Dog has a hard cap of less than 25% of SHIB&apos;s burned tokens, as 50% have already been burned.
+              </p>
+
+              <h1>
+                <u>Why mint?</u>
+              </h1>
+              <p>
+                In the near future an AirDrop reward system will be deployed to give the first x number of minters and
+                the last x number of minters a percentage of the initial supply.
+              </p>
+              <p>The AirDrops will be triggerable by anyone after a waiting period.</p>
+              <p>The same may apply for burners.</p>
+
+              <h1>
+                <u>Fees</u>
+              </h1>
+              <p>The mint fee increases every time the mint function is called.</p>
+              <p>This should limit the supply and prevent abuse of the AirDrop system.</p>
+              <p>Fees from minting will initially be used to provide liquidity.</p>
+              <p>Later on, if feasible, fees will go towards stretch goals.</p>
             </div>
           </div>
         </div>

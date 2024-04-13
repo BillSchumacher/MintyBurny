@@ -7,21 +7,23 @@ import "~~/styles/globals.css";
 const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : `http://localhost:${process.env.PORT || 3000}`;
-const imageUrl = `${baseUrl}/thumbnail.jpg`;
+const imageUrl = `${baseUrl}/minty_burny_logo.jpg`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Scaffold-ETH 2 App",
-    template: "%s | Scaffold-ETH 2",
+    default: "Minty Burny Project",
+    template: "%s | MintyBurny",
   },
-  description: "Built with 🏗 Scaffold-ETH 2",
+  description:
+    "A registry project to track minted and burned tokens. Home of the Hot Dog and Chilly Dog Tokens. Built with 🏗 Scaffold-ETH 2.",
   openGraph: {
     title: {
-      default: "Scaffold-ETH 2 App",
-      template: "%s | Scaffold-ETH 2",
+      default: "Minty Burny Project",
+      template: "%s | MintyBurny",
     },
-    description: "Built with 🏗 Scaffold-ETH 2",
+    description:
+      "A registry project to track minted and burned tokens. Home of the Hot Dog and Chilly Dog Tokens. Built with 🏗 Scaffold-ETH 2.",
     images: [
       {
         url: imageUrl,
@@ -32,13 +34,14 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [imageUrl],
     title: {
-      default: "Scaffold-ETH 2",
-      template: "%s | Scaffold-ETH 2",
+      default: "Minty Burny Project",
+      template: "%s | MintyBurny",
     },
-    description: "Built with 🏗 Scaffold-ETH 2",
+    description:
+      "A registry project to track minted and burned tokens. Home of the Hot Dog and Chilly Dog Tokens. Built with 🏗 Scaffold-ETH 2.",
   },
   icons: {
-    icon: [{ url: "/favicon.png", sizes: "32x32", type: "image/png" }],
+    icon: [{ url: "/minty_burny_logo.png", sizes: "32x32", type: "image/png" }],
   },
 };
 
